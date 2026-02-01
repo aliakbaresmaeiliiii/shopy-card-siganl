@@ -28,12 +28,10 @@ export class CartService {
 
   checkDuplicate(product: Product): boolean {
     const id = this.cartItems().find((item) => item.product.id === product.id);
-    //  increace quantity if found
     if (id) {
       this.updateQuantity(id, id.quantity + 1);
       return true;
     }
-
     return this.cartItems().some((item) => item.product.id === product.id);
   }
 
