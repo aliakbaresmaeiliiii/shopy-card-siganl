@@ -1,16 +1,14 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
-import { Product } from '../product';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductService } from '../product.service';
-import { catchError, EMPTY, Subscription, tap } from 'rxjs';
 
 @Component({
   selector: 'pm-product-list',
   templateUrl: './product-list.component.html',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, ProductDetailComponent, AsyncPipe],
+  imports: [NgIf, NgFor, NgClass, ProductDetailComponent],
 })
 export class ProductListComponent {
   // Just enough here for the template to compile
