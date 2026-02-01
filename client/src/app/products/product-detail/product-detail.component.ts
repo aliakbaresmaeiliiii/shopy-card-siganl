@@ -26,6 +26,7 @@ export class ProductDetailComponent {
   });
 
   addToCart(product: Product) {
+    this.cartService.checkDuplicate(product) ? null :
     this.cartService.addProduct(product);
   }
 }

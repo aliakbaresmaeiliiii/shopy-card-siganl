@@ -14,8 +14,8 @@ import { CartService } from '../cart.service';
 export class CartItemComponent {
   item = signal<CartItem>(undefined!);
   @Input({ required: true }) set cartItem(ci: CartItem) {
-    debugger;
     this.item.set(ci);
+
   }
   private cartService = inject(CartService);
 

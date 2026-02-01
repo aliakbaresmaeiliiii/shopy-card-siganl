@@ -8,14 +8,14 @@ import { Product } from '../products/product';
 export class CartService {
   cartItems = signal<CartItem[]>([]);
   cartCount = computed(() =>
-    this.cartItems().reduce((arr, item) => arr + item.quantity, 0)
+    this.cartItems().reduce((arr, item) => arr + item.quantity, 0),
   );
 
   subTotal = computed(() =>
     this.cartItems().reduce(
       (accTotal, item) => accTotal + item.quantity * item.product.price,
-      0
-    )
+      0,
+    ),
   );
 
   deliveryFee = computed(() => (this.subTotal() < 50 ? 5.99 : 0));
@@ -23,8 +23,19 @@ export class CartService {
   tax = computed(() => Math.round(this.subTotal() * 10.75) / 100);
 
   totalPrice = computed(
-    () => this.subTotal() + this.deliveryFee() + this.tax()
+    () => this.subTotal() + this.deliveryFee() + this.tax(),
   );
+
+  checkDuplicate(product: Product): boolean {
+    const id = this.cartItems().find((item) => item.product.id === product.id);
+    //  increace quantity if found
+    if (id) {
+      this.updateQuantity(id, id.quantity + 1);
+      return true;
+    }
+
+    return this.cartItems().some((item) => item.product.id === product.id);
+  }
 
   addProduct(product: Product): void {
     this.cartItems.update((item) => [...item, { product, quantity: 1 }]);
@@ -32,15 +43,15 @@ export class CartService {
 
   removeFromCart(cartItem: CartItem): void {
     this.cartItems.update((item) =>
-      item.filter((item) => item.product.id !== cartItem.product.id)
+      item.filter((item) => item.product.id !== cartItem.product.id),
     );
   }
 
   updateQuantity(cartItem: CartItem, quantity: number): void {
     this.cartItems.update((item) =>
       item.map((item) =>
-        item.product.id === cartItem.product.id ? { ...item, quantity } : item
-      )
+        item.product.id === cartItem.product.id ? { ...item, quantity } : item,
+      ),
     );
   }
 }
