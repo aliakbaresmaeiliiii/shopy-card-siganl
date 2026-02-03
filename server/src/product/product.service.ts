@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { products } from './seed';
 import { ProductDTO, Result } from './product';
+import { products } from './seed';
 
 @Injectable()
 export class ProductService {
@@ -10,4 +10,6 @@ export class ProductService {
     return { data: this.productList };
   }
  
+
+  
 }

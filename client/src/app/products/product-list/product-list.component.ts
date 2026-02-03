@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
@@ -13,17 +13,19 @@ import { ProductService } from '../product.service';
 export class ProductListComponent {
   // Just enough here for the template to compile
   pageTitle = 'Products';
-  productSerice = inject(ProductService);
+  productService = inject(ProductService);
 
-  products = this.productSerice.products;
-  errorMessage = this.productSerice.producstError;
+
+
+
+
+  products = this.productService.products;
+  errorMessage = this.productService.productError;
   // Selected product id to highlight the entry
-  selectedProductId = this.productSerice.selectedProductId;
-
-
+  selectedProductId = this.productService.selectedProductId;
 
   onSelected(productId: number): void {
-    this.productSerice.productSelected(productId);
+    this.productService.productSelected(productId);
     // this.service.getProduct(productId).pipe(
     //   tap(()=>console.log('data product come'))
     // ).subscribe((res) => {});

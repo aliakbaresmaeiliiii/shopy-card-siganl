@@ -1,31 +1,29 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Product, Result } from './product';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
   catchError,
+  filter,
   map,
-  mergeMap,
   Observable,
   of,
+  shareReplay,
   switchMap,
   tap,
   throwError,
-  shareReplay,
-  BehaviorSubject,
-  filter,
-  combineLatest,
 } from 'rxjs';
-import { ProductData } from './product-data';
-import { HttpErrorService } from '../utilities/http-error.service';
-import { ReviewService } from '../reviews/review.service';
+import { environment } from '../environment/environment';
 import { Review } from '../reviews/review';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { ReviewService } from '../reviews/review.service';
+import { HttpErrorService } from '../utilities/http-error.service';
+import { Product, Result } from './product';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private productsUrl = 'api/products';
+  // private productsUrl = 'api/products';
+  private productsUrl = `${environment.apiUrl}/product`;
 
   http = inject(HttpClient);
   errorService = inject(HttpErrorService);
@@ -34,7 +32,7 @@ export class ProductService {
   selectedProductId = signal<number | undefined>(undefined);
 
   private productsResult$ = this.http.get<Product[]>(this.productsUrl).pipe(
-    map((p) => ({ data: p } as Result<Product[]>)),
+    map((p) => ({ data: p }) as Result<Product[]>),
     tap((p) => console.log(JSON.stringify(p))),
     shareReplay(1),
     tap(() => console.log('After shareReplay')),
@@ -43,11 +41,15 @@ export class ProductService {
       of({
         data: [],
         err: this.errorService.formatError(error),
-      } as Result<Product[]>)
-    )
+      } as Result<Product[]>),
+    ),
   );
 
-  private productsResult = toSignal(this.productsResult$, {
+  // private productsResult = toSignal(this.productsResult$, {
+  //   initialValue: { data: [] } as Result<Product[]>,
+  // });
+
+  productsResult = toSignal(this.productsResult$, {
     initialValue: { data: [] } as Result<Product[]>,
   });
 
@@ -65,11 +67,11 @@ export class ProductService {
           of({
             data: undefined,
             error: this.errorService.formatError(err),
-          } as Result<Product>)
-        )
+          } as Result<Product>),
+        ),
       );
     }),
-    map((p) => ({ data: p } as Result<Product>))
+    map((p) => ({ data: p }) as Result<Product>),
   );
   private productResult = toSignal(this.productResult$);
 
@@ -92,7 +94,7 @@ export class ProductService {
     if (product.hasReviews) {
       return this.http
         .get<Review[]>(this.reviewService.getReviewUrl(product.id))
-        .pipe(map((reviews) => ({ ...product, reviews } as Product)));
+        .pipe(map((reviews) => ({ ...product, reviews }) as Product));
     } else {
       return of(product);
     }
