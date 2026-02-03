@@ -6,10 +6,9 @@ import { ProductService } from '../product.service';
 import { CartService } from 'src/app/cart/cart.service';
 
 @Component({
-  selector: 'pm-product-detail',
-  templateUrl: './product-detail.component.html',
-  standalone: true,
-  imports: [NgIf, NgFor, CurrencyPipe, AsyncPipe],
+    selector: 'pm-product-detail',
+    templateUrl: './product-detail.component.html',
+    imports: [NgIf, NgFor, CurrencyPipe, AsyncPipe]
 })
 export class ProductDetailComponent {
   productService = inject(ProductService);

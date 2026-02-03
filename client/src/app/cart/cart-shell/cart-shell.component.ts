@@ -3,9 +3,8 @@ import { CartTotalComponent } from '../cart-total/cart-total.component';
 import { CartListComponent } from '../cart-list/cart-list.component';
 
 @Component({
-  standalone: true,
-  imports: [CartListComponent, CartTotalComponent],
-  template: `
+    imports: [CartListComponent, CartTotalComponent],
+    template: `
   <div class='row'>
     <sw-cart-list/>
   </div>
