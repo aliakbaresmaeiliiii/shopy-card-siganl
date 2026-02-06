@@ -1,14 +1,14 @@
 import { Component, computed, inject } from '@angular/core';
 
-import { CurrencyPipe, AsyncPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
+import { CartService } from 'src/app/cart/cart.service';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import { CartService } from 'src/app/cart/cart.service';
 
 @Component({
     selector: 'pm-product-detail',
     templateUrl: './product-detail.component.html',
-    imports: [CurrencyPipe, AsyncPipe]
+    imports: [CurrencyPipe]
 })
 export class ProductDetailComponent {
   productService = inject(ProductService);

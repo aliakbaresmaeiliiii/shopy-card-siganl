@@ -13,7 +13,7 @@
             {{ deliveryFee() | currency }}
           </div>
         }
-        @if (!deliveryFee) {
+        @if (!deliveryFee()) {
           <div
             class="col-md-4"
             style="text-align:right;color:red"

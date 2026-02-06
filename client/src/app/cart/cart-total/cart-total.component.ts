@@ -1,11 +1,11 @@
+import { CurrencyPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { CurrencyPipe, AsyncPipe } from '@angular/common';
 import { CartService } from '../cart.service';
 
 @Component({
     selector: 'sw-cart-total',
     templateUrl: './cart-total.component.html',
-    imports: [CurrencyPipe, AsyncPipe]
+    imports: [CurrencyPipe]
 })
 export class CartTotalComponent {
   cartService = inject(CartService);
