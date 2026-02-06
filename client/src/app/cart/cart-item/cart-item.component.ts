@@ -1,5 +1,5 @@
 import { Component, computed, inject, Input, signal } from '@angular/core';
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { CartItem } from '../cart';
@@ -7,7 +7,7 @@ import { CartService } from '../cart.service';
 
 @Component({
     selector: 'sw-cart-item',
-    imports: [CurrencyPipe, FormsModule, NgFor, NgIf],
+    imports: [CurrencyPipe, FormsModule],
     templateUrl: './cart-item.component.html'
 })
 export class CartItemComponent {

@@ -1,13 +1,13 @@
 import { Component, effect, inject } from '@angular/core';
 
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ProductDetailComponent } from '../product-detail/product-detail.component';
 import { ProductService } from '../product.service';
 
 @Component({
     selector: 'pm-product-list',
     templateUrl: './product-list.component.html',
-    imports: [NgIf, NgFor, NgClass, ProductDetailComponent]
+    imports: [NgClass, ProductDetailComponent]
 })
 export class ProductListComponent {
   // Just enough here for the template to compile

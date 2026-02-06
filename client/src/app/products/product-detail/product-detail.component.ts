@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 
-import { NgIf, NgFor, CurrencyPipe, AsyncPipe } from '@angular/common';
+import { CurrencyPipe, AsyncPipe } from '@angular/common';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { CartService } from 'src/app/cart/cart.service';
@@ -8,7 +8,7 @@ import { CartService } from 'src/app/cart/cart.service';
 @Component({
     selector: 'pm-product-detail',
     templateUrl: './product-detail.component.html',
-    imports: [NgIf, NgFor, CurrencyPipe, AsyncPipe]
+    imports: [CurrencyPipe, AsyncPipe]
 })
 export class ProductDetailComponent {
   productService = inject(ProductService);

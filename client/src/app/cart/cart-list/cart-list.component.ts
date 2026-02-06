@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { NgFor, NgIf } from '@angular/common';
+
 import { CartItem } from '../cart';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { CartService } from '../cart.service';
 
 @Component({
     selector: 'sw-cart-list',
-    imports: [CartItemComponent, NgFor, NgIf],
+    imports: [CartItemComponent],
     templateUrl: 'cart-list.component.html'
 })
 export class CartListComponent {
