@@ -11,8 +11,10 @@
         >
           {{ item.name }}
 
-          @if (item.name === "cart") {
-            <span class="bage bg-primary">
+          @if (item.name === "Cart" && cartCount() > 0) {
+            <span
+              class="bage bg-red-100 rounded-2xl font-bold p-1 text-xs text-red-800"
+            >
               {{ cartCount() > 0 ? cartCount() : "" }}
             </span>
           }

@@ -4,11 +4,12 @@ import { CurrencyPipe } from '@angular/common';
 import { CartService } from 'src/app/cart/cart.service';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'pm-product-detail',
-    templateUrl: './product-detail.component.html',
-    imports: [CurrencyPipe]
+  selector: 'pm-product-detail',
+  templateUrl: './product-detail.component.html',
+  imports: [CurrencyPipe, MatButtonModule],
 })
 export class ProductDetailComponent {
   productService = inject(ProductService);
@@ -25,7 +26,8 @@ export class ProductDetailComponent {
   });
 
   addToCart(product: Product) {
-    this.cartService.checkDuplicate(product) ? null :
-    this.cartService.addProduct(product);
+    this.cartService.checkDuplicate(product)
+      ? null
+      : this.cartService.addProduct(product);
   }
 }

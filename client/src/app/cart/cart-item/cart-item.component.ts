@@ -4,17 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 import { CartItem } from '../cart';
 import { CartService } from '../cart.service';
-
+import { MatSelectModule } from '@angular/material/select';
 @Component({
-    selector: 'sw-cart-item',
-    imports: [CurrencyPipe, FormsModule],
-    templateUrl: './cart-item.component.html'
+  selector: 'sw-cart-item',
+  imports: [CurrencyPipe, FormsModule, MatSelectModule,
+    
+  ],
+  templateUrl: './cart-item.component.html',
 })
 export class CartItemComponent {
   item = signal<CartItem>(undefined!);
   @Input({ required: true }) set cartItem(ci: CartItem) {
     this.item.set(ci);
-
   }
   private cartService = inject(CartService);
 

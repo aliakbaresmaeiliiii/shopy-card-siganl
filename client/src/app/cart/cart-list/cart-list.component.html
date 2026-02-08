@@ -1,27 +1,39 @@
-<div class="card border-secondary">
-  <div class="card-header text-secondary fw-bold">
-    {{ pageTitle }}
+<div class="max-w-5xl mx-auto bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
+
+  <!-- Header -->
+  <div class="px-6 py-4 border-b bg-gray-50">
+    <h2 class="text-lg font-semibold text-gray-800">
+      {{ pageTitle }}
+    </h2>
   </div>
 
-  <div class="card-body">
+  <div class="p-6">
+
     @if (cartItems().length) {
-      <div>
-        <div class="row">
-          <div class="col-md-4 fw-bold">Product</div>
-          <div class="col-md-2 fw-bold text-center">Price</div>
-          <div class="col-md-2 fw-bold text-center">Quantity</div>
-          <div class="col-md-2 fw-bold text-center">Extended Price</div>
-        </div>
-        <!-- Display the cart items -->
+
+      <!-- Column headers -->
+      <div class="grid grid-cols-10 gap-4 text-sm font-semibold text-gray-500 px-4 pb-3 border-b">
+        <div class="col-span-4">Product</div>
+        <div class="col-span-2 text-center">Price</div>
+        <div class="col-span-2 text-center">Quantity</div>
+        <div class="col-span-2 text-right">Extended Price</div>
+      </div>
+
+      <!-- Items -->
+      <div class="divide-y">
         @for (item of cartItems(); track item) {
-          <div>
+          <div class="py-4 px-4 hover:bg-gray-50 transition">
             <sw-cart-item [cartItem]="item" />
           </div>
         }
       </div>
+
     } @else {
-      No items in cart
+
+      <!-- Empty -->
+      <div class="py-16 text-center text-gray-500">
+        No items in cart
+      </div>
     }
   </div>
-
 </div>

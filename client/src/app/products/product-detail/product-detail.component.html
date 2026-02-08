@@ -2,32 +2,32 @@
   <div class="card">
     <div class="card-header">{{ pageTitle() }}</div>
     <div class="card-body">
-      <div class="row">
-        <div class="col-md-2">Name:</div>
-        <div class="col-md-6">{{ product.productName }}</div>
-        <div class="col-md-3">
-          <button class="btn btn-primary" (click)="addToCart(product)">
+      <div class="grid grid-cols-12">
+        <div class="col-span-2">Name:</div>
+        <div class="col-span-6">{{ product.productName }}</div>
+        <div class="col-span-3">
+          <button matButton="filled" (click)="addToCart(product)">
             Add to Cart
           </button>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2">Code:</div>
-        <div class="col-md-6">{{ product.productCode }}</div>
+      <div class="grid grid-cols-12">
+        <div class="col-span-2">Code:</div>
+        <div class="col-span-6">{{ product.productCode }}</div>
       </div>
-      <div class="row">
-        <div class="col-md-2">Description:</div>
-        <div class="col-md-6">{{ product.description }}</div>
+      <div class="grid grid-cols-12">
+        <div class="col-span-2">Description:</div>
+        <div class="col-span-6">{{ product.description }}</div>
       </div>
-      <div class="row">
-        <div class="col-md-2">Price:</div>
-        <div class="col-md-6">
-          {{ product.price | currency : 'USD' : 'symbol' }}
+      <div class="grid grid-cols-12">
+        <div class="col-span-2">Price:</div>
+        <div class="col-span-6">
+          {{ product.price | currency: "USD" : "symbol" }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-2">In Stock:</div>
-        <div class="col-md-6">{{ product.quantityInStock ?? 0 }}</div>
+      <div class="grid grid-cols-12">
+        <div class="col-span-2">In Stock:</div>
+        <div class="col-span-6">{{ product.quantityInStock ?? 0 }}</div>
       </div>
       <div class="table-responsive">
         @if (product.reviews) {
@@ -52,6 +52,18 @@
         } @else {
           No reviews for this product
         }
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="flex items-center justify-center py-24">
+    <div class="flex items-center gap-6 text-gray-600">
+      <div class="text-6xl animate-pulse">←</div>
+      <div class="text-left">
+        <h2 class="text-2xl font-semibold mb-2">Select a product</h2>
+        <p class="text-gray-500">
+          Choose an item from the list on the left to view its details.
+        </p>
       </div>
     </div>
   </div>

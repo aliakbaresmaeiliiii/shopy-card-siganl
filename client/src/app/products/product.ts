@@ -5,10 +5,11 @@ export interface Product {
   id: number;
   productName: string;
   productCode: string;
-  description: string;
+  description?: string;
   price: number;
   quantityInStock?: number;
   hasReviews?: boolean;
+  image?:string;
   reviews?: Review[];
 }
 
