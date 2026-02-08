@@ -22,8 +22,8 @@ import { Product, Result } from './product';
   providedIn: 'root',
 })
 export class ProductService {
-  // private productsUrl = 'api/products';
-  private productsUrl = `${environment.apiUrl}/product`;
+  private productsUrl = 'api/products';
+  // private productsUrl = `${environment.apiUrl}/product`;
 
   http = inject(HttpClient);
   errorService = inject(HttpErrorService);

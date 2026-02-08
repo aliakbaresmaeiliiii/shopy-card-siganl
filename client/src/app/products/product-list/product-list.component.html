@@ -1,35 +1,51 @@
-<div class="row">
-  <div class="col-md-4">
-    <div class="card">
-      <div class="card-header">
-        {{ pageTitle }}
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8 mx-2">
+  <!-- Product List -->
+  <div class="lg:col-span-4">
+    <div class="bg-gray-400 rounded-xl shadow-sm border border-gray-200">
+      <div class="px-4 py-3 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-800">
+          {{ pageTitle }}
+        </h2>
       </div>
 
       @if (products(); as products) {
-        <div class="card-body">
-          <div class="list-group">
+        <div class="p-3">
+          <ul class="space-y-1">
             @for (product of products; track product) {
-              <button
-                type="button"
-                class="list-group-item"
-                [ngClass]="{ active: product.id === selectedProductId() }"
-                (click)="onSelected(product.id)"
+              <li>
+                <button
+                  type="button"
+                  class="w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  [ngClass]="{
+                    'bg-indigo-600 text-white hover:bg-indigo-600 hover:text-white':
+                      product.id === selectedProductId(),
+                  }"
+                  (click)="onSelected(product.id)"
                 >
-                {{ product.productName }}
-              </button>
+                  {{ product.productName }}
+                </button>
+              </li>
             }
-          </div>
+          </ul>
         </div>
       }
     </div>
+
     @if (errorMessage()) {
-      <div class="alert alert-danger">
+      <div
+        class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+      >
         {{ errorMessage() }}
       </div>
     }
   </div>
 
-  <div class="col-md-8">
-    <pm-product-detail />
+  <!-- Product Detail -->
+  <div class="lg:col-span-8">
+    <div
+      class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 h-full"
+    >
+      <pm-product-detail />
+    </div>
   </div>
 </div>

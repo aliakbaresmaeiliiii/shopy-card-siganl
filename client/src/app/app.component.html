@@ -1,23 +1,24 @@
-<nav class="navbar navbar-expand navbar-light bg-light">
-  <a class="navbar-brand">{{pageTitle}}</a>
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link"
-         [routerLink]="['/welcome']"
-         routerLinkActive="active">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link"
-         [routerLink]="['/products']"
-         routerLinkActive="active">Product List</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link"
-         [routerLink]="['/cart']"
-         routerLinkActive="active">Cart
-         <span class="badge bg-primary">{{cartCount() > 0 ? cartCount() : ''}}</span>
+<nav class="flex gap-10 bg-gray-400 p-4">
+  <a class="navbar-brand">{{ pageTitle }}</a>
+  <ul class="flex items-center gap-4">
+    @for (item of menuItems; track item.id) {
+      <li class="flex">
+        <a
+          class="nav-link"
+          [routerLink]="item.routerLink"
+          routerLinkActive="bg-gray-600 p-2 rounded-md text-white"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ item.name }}
+
+          @if (item.name === "cart") {
+            <span class="bage bg-primary">
+              {{ cartCount() > 0 ? cartCount() : "" }}
+            </span>
+          }
         </a>
-    </li>
+      </li>
+    }
   </ul>
 </nav>
 

@@ -10,11 +10,27 @@ import { CartService } from './cart/cart.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  // Just enough here for the template to compile
   pageTitle = 'Acme Product Management';
   cartService = inject(CartService);
+  menuItems = [
+    {
+      id: 1,
+      name: 'home',
+      routerLink:'/welcome',
+    },
+    {
+      id: 1,
+      name: 'Product List',
+      routerLink:'/products'
+
+    },
+    {
+      id: 1,
+      name: 'Cart',
+      routerLink:'/cart'
+
+    },
+  ];
 
   cartCount = this.cartService.cartCount;
-
- 
 }

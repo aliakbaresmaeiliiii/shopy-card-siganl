@@ -10,13 +10,8 @@ import { ProductService } from '../product.service';
     imports: [NgClass, ProductDetailComponent]
 })
 export class ProductListComponent {
-  // Just enough here for the template to compile
   pageTitle = 'Products';
   productService = inject(ProductService);
-
-
-
-
 
   products = this.productService.products;
   errorMessage = this.productService.productError;
