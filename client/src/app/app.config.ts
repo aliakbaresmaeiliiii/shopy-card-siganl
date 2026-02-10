@@ -9,13 +9,11 @@ import { errorInterceptor } from './interceptors/http-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(
-      withInterceptors([errorInterceptor]), 
-    ),
-    importProvidersFrom(
-      FormsModule,
-      InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
-    ),
+    provideHttpClient(),
+    // importProvidersFrom(
+    //   FormsModule,
+    //   InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
+    // ),
     provideRouter(routes),
   ],
 };

@@ -19,10 +19,15 @@ export class AuthController {
   //   return this.authService.login(body.email, body.password);
   // }
 
+
   @Post('login')
   login(@Body() body: { email: string; password: string }) {
     console.log('LOGIN HIT', body);
-    return { accessToken: 'fake-token' };
+    this.authService.login(body.email, body.password);
+    const data = this.authService.login(body.email, body.password);
+
+
+    return data;
   }
 
   @Post('register')

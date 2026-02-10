@@ -1,5 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { UserDTO } from './auth';
+import * as jwt from 'jsonwebtoken';
 
 export class AuthService {
   users: UserDTO[] = [
@@ -16,8 +17,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    var token = jwt.sign({ foo: 'bar' }, 'shhhhh');
+
     return {
-      accessToken: 'fake-jwt-token',
+      accessToken: token,
       user: { email },
     };
   }

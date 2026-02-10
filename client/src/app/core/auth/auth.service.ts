@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/app/environment/environment';
@@ -17,13 +17,15 @@ export class AuthService {
 
   http = inject(HttpClient);
 
-  // login(user: any): Observable<UserDto> {
-  //   return this.http.post<UserDto>(`${this.url}/login`, user);
-  // }
-private api = 'http://localhost:3000/api/auth';
+  private api = 'http://localhost:3000/api/auth';
 
-login(data: { email: string; password: string }) {
-  return this.http.post(`${this.api}/login`, data);
-}
-
+  login(data: {
+    email: string;
+    password: string;
+  }): Observable<{ accessToken: string }> {
+    return this.http.post<{ accessToken: string }>(
+      'http://localhost:3000/api/auth/login',
+      data,
+    );
+  }
 }
