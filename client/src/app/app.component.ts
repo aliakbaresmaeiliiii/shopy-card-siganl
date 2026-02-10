@@ -3,9 +3,16 @@ import { Component, inject } from '@angular/core';
 import { RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
 import { CartService } from './cart/cart.service';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'pm-root',
-  imports: [RouterLinkActive, RouterLink, RouterOutlet, MatBadgeModule],
+  imports: [
+    RouterLinkActive,
+    RouterLink,
+    RouterOutlet,
+    MatBadgeModule,
+    MatMenuModule,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

@@ -1,6 +1,6 @@
 <nav class="flex gap-10 bg-gray-400 p-4">
   <a class="navbar-brand">{{ pageTitle }}</a>
-  <ul class="flex items-center gap-4">
+  <ul class="flex items-center justify-between gap-4">
     @for (item of menuItems; track item.id) {
       <li class="flex">
         <a
@@ -21,9 +21,19 @@
         </a>
       </li>
     }
+    <span
+      class="material-symbols-outlined absolute right-2.5 cursor-pointer"
+      [matMenuTriggerFor]="menu"
+    >
+      person
+    </span>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>Aliakbar Esmaeili</button>
+      <button mat-menu-item routerLink="/login">Log out</button>
+    </mat-menu>
   </ul>
 </nav>
 
-<div class="container">
+<div class="bg-gray-400 h-svh">
   <router-outlet></router-outlet>
 </div>

@@ -1,14 +1,25 @@
-<form action="">
-
 <div class="form-container">
   <p class="title">Welcome back</p>
   <form class="form">
-    <input type="email" class="input" placeholder="Email" />
-    <input type="password" class="input" placeholder="Password" />
+    <input
+      type="email"
+      class="input"
+      placeholder="Email"
+      [formField]="signupForm.email"
+    />
+    @if (signupForm.email().touched() && signupForm.email().invalid()) {
+      <p class="error">{{ signupForm.email().errors()[0].message }}</p>
+    }
+    <input
+      type="password"
+      class="input"
+      placeholder="Password"
+      [formField]="signupForm.password"
+    />
     <p class="page-link">
       <span class="page-link-label">Forgot Password?</span>
     </p>
-    <button class="form-btn">Log in</button>
+    <button type="button" class="form-btn" (click)="login()">Log in</button>
   </form>
   <p class="sign-up-label">
     Don't have an account?<span class="sign-up-link">Sign up</span>
@@ -71,4 +82,3 @@
     </div>
   </div>
 </div>
-</form>

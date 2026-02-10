@@ -4,15 +4,18 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AppData } from './app-data';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { errorInterceptor } from './interceptors/http-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([errorInterceptor]), 
+    ),
     importProvidersFrom(
       FormsModule,
-      InMemoryWebApiModule.forRoot(AppData, { delay: 1000 })
+      InMemoryWebApiModule.forRoot(AppData, { delay: 1000 }),
     ),
-    provideRouter(routes)
-  ]
+    provideRouter(routes),
+  ],
 };
