@@ -29,6 +29,9 @@
     </span>
     <mat-menu #menu="matMenu">
       <button mat-menu-item>Aliakbar Esmaeili</button>
+      <button mat-menu-item (click)="favorite()">
+        <span class="material-symbols-outlined"> favorite </span>My favorites
+      </button>
       <button mat-menu-item routerLink="/login">Log out</button>
     </mat-menu>
   </ul>

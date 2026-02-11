@@ -1,6 +1,6 @@
 //import 'zone.js/dist/zone';  // Required for Stackblitz
 import { Component, inject } from '@angular/core';
-import { RouterLinkActive, RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLinkActive, RouterLink, RouterOutlet, Router } from '@angular/router';
 import { CartService } from './cart/cart.service';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
@@ -19,6 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 export class AppComponent {
   pageTitle = 'Acme Product Management';
   cartService = inject(CartService);
+  router = inject(Router);
   menuItems = [
     {
       id: 1,
@@ -37,5 +38,8 @@ export class AppComponent {
     },
   ];
 
+  favorite(){
+    this.router.navigate(['/favorites']);
+  }
   cartCount = this.cartService.cartCount;
 }

@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
+  BehaviorSubject,
   catchError,
   filter,
   map,
@@ -24,6 +25,27 @@ import { Product, Result } from './product';
 export class ProductService {
   private productsUrl = 'api/products';
   // private productsUrl = `${environment.apiUrl}/product`;
+  private storeProductSubject = new BehaviorSubject<Product[]>([]);
+  storeProduct$ = this.storeProductSubject.asObservable();
+
+  setProduct(product: Product) {
+    const current = this.storeProductSubject.value;
+    this.storeProductSubject.next([...current, product]);
+  }
+
+  getProduct(): Observable<Product | null> {
+    return this.storeProduct$.pipe(
+      map((products) => (products.length > 0 ? products[0] : null)),
+    );
+  }
+
+  removeFavorite(productId: number) {
+    const updated = this.storeProductSubject.value.filter(
+      (product) => product.id !== productId,
+    );
+debugger;
+    this.storeProductSubject.next(updated);
+  }
 
   api = `${environment.apiUrl}/api/product`;
   http = inject(HttpClient);
@@ -46,16 +68,21 @@ export class ProductService {
     ),
   );
 
-  getAllProducts(page: number = 1, limit: number = 10): Observable<Result<Product[]>> {
-    return this.http.get<Product[]>(`${this.api}?page=${page}&limit=${limit}`).pipe(
-      map((p) => ({ data: p }) as Result<Product[]>),
-      catchError((error) =>
-        of({
-          data: [],
-          err: this.errorService.formatError(error),
-        } as Result<Product[]>),
-      ),
-    );
+  getAllProducts(
+    page: number = 1,
+    limit: number = 10,
+  ): Observable<Result<Product[]>> {
+    return this.http
+      .get<Product[]>(`${this.api}?page=${page}&limit=${limit}`)
+      .pipe(
+        map((p) => ({ data: p }) as Result<Product[]>),
+        catchError((error) =>
+          of({
+            data: [],
+            err: this.errorService.formatError(error),
+          } as Result<Product[]>),
+        ),
+      );
   }
   // private productsResult = toSignal(this.productsResult$, {
   //   initialValue: { data: [] } as Result<Product[]>,

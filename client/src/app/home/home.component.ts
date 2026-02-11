@@ -6,11 +6,13 @@ import { Product } from '../products/product';
 import { ProductSkeletonComponent } from '../products/product-skelton';
 import { ProductService } from '../products/product.service';
 import { environment } from '../environment/environment';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './home.component.html',
   standalone: true,
-  imports: [CurrencyPipe, ProductSkeletonComponent],
+  styleUrls: ['./home.component.css'],
+  imports: [ ProductSkeletonComponent],
 })
 export class HomeComponent {
   products = signal<Product[]>([]);
@@ -20,8 +22,7 @@ export class HomeComponent {
   environment = environment;
   displayLimit = signal(8);
   skeletonItems = signal(Array.from({ length: 8 }));
-
-
+  router = inject(Router);
 
   ngOnInit() {
     this.loadProducts();
@@ -37,11 +38,17 @@ export class HomeComponent {
         this.products.update((prev) => [...prev, ...(res.data.data || [])]);
       });
   }
-
+  productDetail(product: Product) {
+    this.router.navigate(['/products', product.id]);
+  }
   loadMore() {
     this.currentPage.set(this.currentPage() + 1);
     debugger;
     this.loadProducts();
+  }
+
+  addFavorite(product: Product){
+    this.productService.setProduct(product);
   }
 
   addToCart(product: Product) {

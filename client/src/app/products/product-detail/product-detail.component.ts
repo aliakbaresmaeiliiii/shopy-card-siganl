@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'pm-product-detail',
   templateUrl: './product-detail.component.html',
+  styleUrls: ['./product-detail.component.css'],
   imports: [CurrencyPipe, MatButtonModule],
 })
 export class ProductDetailComponent {

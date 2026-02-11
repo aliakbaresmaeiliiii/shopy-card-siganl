@@ -19,12 +19,33 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'products/:id',
+    loadComponent: () =>
+      import('./products/product-detail/product-detail.component').then(
+        (c) => c.ProductDetailComponent,
+      ),
+  },
+  {
+    path: 'favorites',
+    loadComponent: () =>
+      import('./favorites/favorites.component').then(
+        (c) => c.FavoritesComponent,
+      ),
+  },
+  {
     path: 'cart',
     loadComponent: () =>
       import('./cart/cart-shell/cart-shell.component').then(
         (c) => c.CartShellComponent,
       ),
   },
+
+  {
+    path: 'checkout',
+    loadComponent: () =>
+      import('./checkout/checkout.component').then((c) => c.CheckoutComponent),
+  },
+
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];
