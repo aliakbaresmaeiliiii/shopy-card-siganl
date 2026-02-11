@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { email, form, FormField } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { AuthService, UserDto } from '../auth.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'pm-login',
   imports: [ReactiveFormsModule, FormField],
@@ -15,7 +16,7 @@ export class LoginComponent {
   router = inject(Router);
   // Signal با مقدار اولیه خالی
   signupModel = signal({ email: '', password: '' });
-
+  toastr = inject(ToastrService);
   // فرم reactive ساده
   signupForm = form(this.signupModel, (schemaPath) => {
     email(schemaPath.email);
@@ -30,8 +31,12 @@ export class LoginComponent {
         console.log('USER LOGGED IN', res);
         localStorage.setItem('token', res.accessToken);
         this.router.navigate(['/welcome']);
+        this.toastr.success('Login Successful!', 'Welcome Back');
       },
-      error: (err) => console.error('ERROR', err),
+      error: (err) => {
+        this.toastr.error('Login Failed!', 'Error');
+        console.error('ERROR', err);
+      },
     });
   }
 

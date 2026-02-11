@@ -1,5 +1,3 @@
-
-
 /* Defines a product review */
 export interface Review {
   id: number;
@@ -9,13 +7,13 @@ export interface Review {
   text: string;
 }
 
-
 export interface ProductDTO {
   id: number;
   productName: string;
   productCode: string;
-  description: string;
+  description?: string;
   price: number;
+  image?: string;
   quantityInStock?: number;
   hasReviews?: boolean;
   reviews?: Review[];
@@ -25,6 +23,3 @@ export interface Result<T> {
   data: T | undefined;
   error?: string;
 }
-
-
-

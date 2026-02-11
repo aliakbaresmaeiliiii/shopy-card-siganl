@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDTO } from './auth';
 
@@ -19,13 +19,17 @@ export class AuthController {
   //   return this.authService.login(body.email, body.password);
   // }
 
+  @Get('profile')
+  getProfile(@Req() req: Request) {
+    // `req.user` comes from JwtMiddleware
+    return { email: (req as any).user.email };
+  }
 
   @Post('login')
   login(@Body() body: { email: string; password: string }) {
     console.log('LOGIN HIT', body);
     this.authService.login(body.email, body.password);
     const data = this.authService.login(body.email, body.password);
-
 
     return data;
   }

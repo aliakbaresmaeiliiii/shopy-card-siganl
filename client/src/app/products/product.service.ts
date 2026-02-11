@@ -25,6 +25,7 @@ export class ProductService {
   private productsUrl = 'api/products';
   // private productsUrl = `${environment.apiUrl}/product`;
 
+  api = `${environment.apiUrl}/api/product`;
   http = inject(HttpClient);
   errorService = inject(HttpErrorService);
   reviewService = inject(ReviewService);
@@ -45,6 +46,17 @@ export class ProductService {
     ),
   );
 
+  getAllProducts(): Observable<Result<Product[]>> {
+    return this.http.get<Product[]>(this.api).pipe(
+      map((p) => ({ data: p }) as Result<Product[]>),
+      catchError((error) =>
+        of({
+          data: [],
+          err: this.errorService.formatError(error),
+        } as Result<Product[]>),
+      ),
+    );
+  }
   // private productsResult = toSignal(this.productsResult$, {
   //   initialValue: { data: [] } as Result<Product[]>,
   // });

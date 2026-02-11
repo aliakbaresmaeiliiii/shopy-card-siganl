@@ -15,10 +15,10 @@
   >
     @if (isLoading()) {
       @for (item of skeletonItems(); track $index) {
-       <app-product-skeleton/>
+        <app-product-skeleton />
       }
     } @else {
-      @for (product of displayProducts(); track product) {
+      @for (product of products(); track $index) {
         <div
           class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition transform hover:-translate-y-1"
         >
@@ -27,7 +27,8 @@
             class="relative w-full h-60 bg-gray-100 flex items-center justify-center"
           >
             <img
-              [src]="product.image"
+              [src]="environment.apiUrl  + product.image"
+              crossorigin="anonymous"
               [alt]="product.productName"
               class="object-contain h-full w-full"
             />
@@ -58,6 +59,7 @@
             </div>
           </div>
         </div>
+
       } @empty {
         <div class="flex justify-center items-center">There is no data...</div>
       }

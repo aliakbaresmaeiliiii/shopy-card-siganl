@@ -7,9 +7,7 @@ export class ProductService {
   private productList = [...products];
 
   getAll(): Result<ProductDTO[]> {
-    return { data: this.productList };
+    const data = this.productList;
+    return { data };
   }
- 
-
-  
 }
