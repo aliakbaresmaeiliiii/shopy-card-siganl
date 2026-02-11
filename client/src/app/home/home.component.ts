@@ -21,32 +21,27 @@ export class HomeComponent {
   displayLimit = signal(8);
   skeletonItems = signal(Array.from({ length: 8 }));
 
-  displayProducts = computed(() =>
-    this.productService.getAllProducts().subscribe((res) => {
-      debugger;
-      this.products.set(res.data || []);
-      this.products().slice(0, this.displayLimit());
-    }),
-  );
+
 
   ngOnInit() {
     this.loadProducts();
   }
 
- 
-
-
+  currentPage = signal(1);
   loadProducts() {
-    // simulate API call
-    this.productService.getAllProducts().subscribe((result: any) => {
-      this.isLoading.set(false);
-      console.log(result.data.data);
-      this.products.set(result.data.data || []);
-    });
+    this.isLoading.set(true);
+    this.productService
+      .getAllProducts(this.currentPage(), 8)
+      .subscribe((res: any) => {
+        this.isLoading.set(false);
+        this.products.update((prev) => [...prev, ...(res.data.data || [])]);
+      });
   }
 
   loadMore() {
-    this.displayLimit.set(this.displayLimit() + 8);
+    this.currentPage.set(this.currentPage() + 1);
+    debugger;
+    this.loadProducts();
   }
 
   addToCart(product: Product) {

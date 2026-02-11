@@ -46,8 +46,8 @@ export class ProductService {
     ),
   );
 
-  getAllProducts(): Observable<Result<Product[]>> {
-    return this.http.get<Product[]>(this.api).pipe(
+  getAllProducts(page: number = 1, limit: number = 10): Observable<Result<Product[]>> {
+    return this.http.get<Product[]>(`${this.api}?page=${page}&limit=${limit}`).pipe(
       map((p) => ({ data: p }) as Result<Product[]>),
       catchError((error) =>
         of({

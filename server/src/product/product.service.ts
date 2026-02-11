@@ -6,8 +6,10 @@ import { products } from './seed';
 export class ProductService {
   private productList = [...products];
 
-  getAll(): Result<ProductDTO[]> {
-    const data = this.productList;
+  getPaginated(page: number = 1, limit: number = 10): Result<ProductDTO[]> {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const data = this.productList.slice(startIndex, endIndex);
     return { data };
   }
 }
