@@ -1,4 +1,4 @@
-/* From Uiverse.io by Smit-Prajapati */ 
+/* From Uiverse.io by Smit-Prajapati */
 .card {
   --accent-color: #ffd426;
   position: relative;
@@ -64,12 +64,12 @@
 
 .card .favorite input:checked ~ svg {
   animation: bouncing 0.5s;
-  fill: rgb(255, 95, 95);
+  fill: #a8a8a8;
   filter: drop-shadow(0px 3px 1px rgba(53, 53, 53, 0.14));
 }
 
 .card .favorite svg {
-  fill: #a8a8a8;
+  fill: rgb(255, 95, 95);
 }
 
 .card .content {
@@ -120,7 +120,13 @@
   position: relative;
 }
 
-.card .content .color-size-container .colors .colors-container .color:hover .color-name {
+.card
+  .content
+  .color-size-container
+  .colors
+  .colors-container
+  .color:hover
+  .color-name {
   display: block;
 }
 
@@ -132,7 +138,13 @@
   border-radius: 50%;
 }
 
-.card .content .color-size-container .colors .colors-container .color .color-name {
+.card
+  .content
+  .color-size-container
+  .colors
+  .colors-container
+  .color
+  .color-name {
   display: none;
   position: absolute;
   bottom: 125%;
@@ -145,19 +157,43 @@
   text-align: center;
 }
 
-.card .content .color-size-container .colors .colors-container .color:first-child a {
+.card
+  .content
+  .color-size-container
+  .colors
+  .colors-container
+  .color:first-child
+  a {
   border-color: #ffd426;
 }
 
-.card .content .color-size-container .colors .colors-container .color:nth-child(2) a {
+.card
+  .content
+  .color-size-container
+  .colors
+  .colors-container
+  .color:nth-child(2)
+  a {
   background: #144076;
 }
 
-.card .content .color-size-container .colors .colors-container .color:nth-child(3) a {
+.card
+  .content
+  .color-size-container
+  .colors
+  .colors-container
+  .color:nth-child(3)
+  a {
   border-color: #00b9ff;
 }
 
-.card .content .color-size-container .colors .colors-container .color:nth-child(4) a {
+.card
+  .content
+  .color-size-container
+  .colors
+  .colors-container
+  .color:nth-child(4)
+  a {
   border-color: #ff6ba1;
 }
 
@@ -182,17 +218,39 @@
   cursor: pointer;
 }
 
-.card .content .color-size-container .sizes .size-container .size .size-radio input {
+.card
+  .content
+  .color-size-container
+  .sizes
+  .size-container
+  .size
+  .size-radio
+  input {
   display: none;
 }
 
-.card .content .color-size-container .sizes .size-container .size .size-radio input:checked ~ .name {
+.card
+  .content
+  .color-size-container
+  .sizes
+  .size-container
+  .size
+  .size-radio
+  input:checked
+  ~ .name {
   background: var(--accent-color);
   border-radius: 2rem 2rem 1.5rem 1.5rem;
   color: white;
 }
 
-.card .content .color-size-container .sizes .size-container .size .size-radio .name {
+.card
+  .content
+  .color-size-container
+  .sizes
+  .size-container
+  .size
+  .size-radio
+  .name {
   display: grid;
   place-content: center;
   height: 100%;
@@ -255,7 +313,8 @@
 }
 
 @keyframes bouncing {
-  from, to {
+  from,
+  to {
     transform: scale(1, 1);
   }
 

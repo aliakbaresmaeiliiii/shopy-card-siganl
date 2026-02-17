@@ -5,21 +5,53 @@
       type="email"
       class="input"
       placeholder="Email"
-      [formField]="signupForm.email"
+      [formField]="loginForm.email"
     />
-    @if (signupForm.email().touched() && signupForm.email().invalid()) {
-      <p class="error">{{ signupForm.email().errors()[0].message }}</p>
+    @if (emailField().invalid() && emailField().touched()) {
+      @for (error of emailField().errors(); track error.kind) {
+        <ng-container>
+          <p
+            class="animate-fade-in text-red-800"
+            [class.opacity-100]="true"
+            [class.translate-y-0]="true"
+          >
+            {{ error.message }}
+          </p>
+        </ng-container>
+      }
     }
     <input
       type="password"
       class="input"
       placeholder="Password"
-      [formField]="signupForm.password"
+      [formField]="loginForm.password"
     />
+
+    @if (passwordField().invalid() && passwordField().touched()) {
+      @for (error of passwordField().errors(); track error.kind) {
+        <ng-container>
+          <p
+            class="animate-fade-in text-red-800"
+            [class.opacity-100]="true"
+            [class.translate-y-0]="true"
+          >
+            {{ error.message }}
+          </p>
+        </ng-container>
+      }
+    }
+
     <p class="page-link">
       <span class="page-link-label">Forgot Password?</span>
     </p>
-    <button type="button" class="form-btn" (click)="login()">Log in</button>
+    <button
+      type="button"
+      class="form-btn"
+      (click)="login()"
+      [disabled]="!loginForm().invalid!"
+    >
+      Log in
+    </button>
   </form>
   <p class="sign-up-label">
     Don't have an account?<span class="sign-up-link">Sign up</span>

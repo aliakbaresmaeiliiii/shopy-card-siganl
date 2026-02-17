@@ -27,23 +27,30 @@ export class ProductService {
   // private productsUrl = `${environment.apiUrl}/product`;
   private storeProductSubject = new BehaviorSubject<Product[]>([]);
   storeProduct$ = this.storeProductSubject.asObservable();
+  private _favorites = signal<Set<number>>(new Set());
+  favorites = this._favorites.asReadonly();
 
-  setProduct(product: Product) {
-    const current = this.storeProductSubject.value;
-    this.storeProductSubject.next([...current, product]);
+  toggle(productId: number) {
+    const current = new Set(this._favorites());
+
+    if (current.has(productId)) {
+      current.delete(productId);
+    } else {
+      current.add(productId);
+    }
+
+    this._favorites.set(current);
   }
 
-  getProduct(): Observable<Product | null> {
-    return this.storeProduct$.pipe(
-      map((products) => (products.length > 0 ? products[0] : null)),
-    );
+  isFavorite(productId: number): boolean {
+    return this._favorites().has(productId);
   }
 
   removeFavorite(productId: number) {
     const updated = this.storeProductSubject.value.filter(
       (product) => product.id !== productId,
     );
-debugger;
+    debugger;
     this.storeProductSubject.next(updated);
   }
 

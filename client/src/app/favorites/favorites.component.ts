@@ -4,10 +4,11 @@ import { ProductService } from '../products/product.service';
 import { ProductSkeletonComponent } from '../products/product-skelton';
 import { environment } from '../environment/environment';
 import { Router } from '@angular/router';
+import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'pm-favorites',
-  imports: [ProductSkeletonComponent],
+  imports: [ HomeComponent],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.css',
 })
@@ -20,13 +21,7 @@ export class FavoritesComponent {
   environment = environment;
   router = inject(Router);
 
-  ngOnInit() {
-    this.productService.getProduct().subscribe((product) => {
-      debugger;
-      this.favoriteProduct = product;
-      this.isLoading.set(false);
-    });
-  }
+  ngOnInit() {}
 
   removeFavorite(product: Product) {
     debugger;

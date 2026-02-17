@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { CurrencyPipe } from '../pipe/currency.pipe';
 import { ProductData } from '../products/product-data';
 import { CartService } from '../cart/cart.service';
@@ -9,10 +9,11 @@ import { environment } from '../environment/environment';
 import { Router } from '@angular/router';
 
 @Component({
+  selector: 'app-home',
   templateUrl: './home.component.html',
   standalone: true,
   styleUrls: ['./home.component.css'],
-  imports: [ ProductSkeletonComponent],
+  imports: [ProductSkeletonComponent],
 })
 export class HomeComponent {
   products = signal<Product[]>([]);
@@ -23,7 +24,7 @@ export class HomeComponent {
   displayLimit = signal(8);
   skeletonItems = signal(Array.from({ length: 8 }));
   router = inject(Router);
-
+  product = input();
   ngOnInit() {
     this.loadProducts();
   }
@@ -47,9 +48,21 @@ export class HomeComponent {
     this.loadProducts();
   }
 
-  addFavorite(product: Product){
-    this.productService.setProduct(product);
+  isFavorite(product: Product) {
+    // return this.productService.favorites.has(product.id);
   }
+
+  addFavorite(product: Product) {
+    // if (this.productService.favorites.has(product.id)) {
+    //   this.productService.favorites.delete(product.id);
+    // } else {
+    //   this..favorites.add(product.id);
+    // }
+  }
+
+  // addFavorite(product: Product) {
+  //   this.productService.setProduct(product);
+  // }
 
   addToCart(product: Product) {
     this.cartService.checkDuplicate(product)

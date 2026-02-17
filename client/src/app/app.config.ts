@@ -1,15 +1,17 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { AppData } from './app-data';
+import { provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { routes } from './app.routes';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { errorInterceptor } from './interceptors/http-error.interceptor';
 import { provideToastr } from 'ngx-toastr';
+import { routes } from './app.routes';
+import { PAYMENT_TOKEN } from './core/payments/payment.token';
+import { PaypalService } from './core/services/paypal.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    {
+      provide: PAYMENT_TOKEN,
+      useClass: PaypalService,
+    },
     provideHttpClient(),
     // importProvidersFrom(
     //   FormsModule,

@@ -139,3 +139,23 @@
   font-size: 18px;
   margin-bottom: 1px;
 }
+
+
+/* Applies a red border to inputs that are invalid AND have been touched by the user */
+.input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+/* Alternatively, if you want it to appear as soon as the user starts typing and it's invalid */
+.input.ng-invalid.ng-dirty {
+  border: 1px solid red;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; transform: translateY(-5px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}

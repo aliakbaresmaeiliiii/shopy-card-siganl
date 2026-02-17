@@ -1,4 +1,4 @@
-﻿<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-slate-200">
+﻿<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 ">
   <!-- Hero / Page Header -->
   <div class="mb-12 text-center">
     <h1 class="text-4xl font-extrabold text-gray-900 mb-2">
@@ -29,16 +29,18 @@
 
             <div class="price">{{ product.price }}</div>
           </div>
-          <label class="favorite" (click)="addFavorite(product)">
-            <input checked="" type="checkbox" />
+          <label
+            (click)="productService.toggle(product.id)"
+            class="cursor-pointer"
+          >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill="#000000"
+              class="w-6 h-6 transition-colors duration-200"
+              fill="currentColor"
+              [class.text-gray-400]="!productService.isFavorite(product.id)"
+              [class.text-red-500]="productService.isFavorite(product.id)"
             >
-              <path
-                d="M12 20a1 1 0 0 1-.437-.1C11.214 19.73 3 15.671 3 9a5 5 0 0 1 8.535-3.536l.465.465.465-.465A5 5 0 0 1 21 9c0 6.646-8.212 10.728-8.562 10.9A1 1 0 0 1 12 20z"
-              ></path>
+              
             </svg>
           </label>
 

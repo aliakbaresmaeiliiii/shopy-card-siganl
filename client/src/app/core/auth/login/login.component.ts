@@ -1,10 +1,21 @@
 import { Component, inject, signal } from '@angular/core';
 
-import { ReactiveFormsModule } from '@angular/forms';
-import { email, form, FormField } from '@angular/forms/signals';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  email,
+  form,
+  FormField,
+  minLength,
+  required,
+} from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { AuthService, UserDto } from '../auth.service';
 import { ToastrService } from 'ngx-toastr';
+
+export interface login {
+  email: string;
+  password: string;
+}
 @Component({
   selector: 'pm-login',
   imports: [ReactiveFormsModule, FormField],
@@ -14,16 +25,24 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent {
   service = inject(AuthService);
   router = inject(Router);
-  // Signal با مقدار اولیه خالی
-  signupModel = signal({ email: '', password: '' });
-  toastr = inject(ToastrService);
-  // فرم reactive ساده
-  signupForm = form(this.signupModel, (schemaPath) => {
-    email(schemaPath.email);
+  toast = inject(ToastrService);
+  loginModel = signal<login>({ email: '', password: '' });
+  // 2. Set up the form with validation rules in the schema function
+  loginForm = form(this.loginModel, (login) => {
+    required(login.email, { message: 'Email is required' });
+    email(login.email, { message: 'Enter a valid email address' });
+    required(login.password, { message: 'Password is required' });
+    minLength(login.password, 6, {
+      message: 'Password must be at least 6 characters',
+    });
   });
 
+  // Access the fields for use in the template
+  emailField = this.loginForm.email;
+  passwordField = this.loginForm.password;
+
   login() {
-    const data: UserDto = this.signupForm().value();
+    const data: UserDto = this.loginForm().value();
     console.log('DATA SENT:', data);
 
     this.service.login(data).subscribe({
@@ -31,10 +50,10 @@ export class LoginComponent {
         console.log('USER LOGGED IN', res);
         localStorage.setItem('token', res.accessToken);
         this.router.navigate(['/welcome']);
-        this.toastr.success('Login Successful!', 'Welcome Back');
+        this.toast.success('Login Successful!', 'Welcome Back');
       },
       error: (err) => {
-        this.toastr.error('Login Failed!', 'Error');
+        this.toast.error('Login Failed!', 'Error');
         console.error('ERROR', err);
       },
     });
