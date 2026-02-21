@@ -1,42 +1,5 @@
-<nav class="flex gap-10 bg-gray-400 p-4">
-  <a class="navbar-brand">{{ pageTitle }}</a>
-  <ul class="flex items-center justify-between gap-4">
-    @for (item of menuItems; track item.id) {
-      <li class="flex">
-        <a
-          class="nav-link"
-          [routerLink]="item.routerLink"
-          routerLinkActive="bg-gray-600 p-2 rounded-md text-white"
-          [routerLinkActiveOptions]="{ exact: true }"
-        >
-          {{ item.name }}
+<pm-app-header />
 
-          @if (item.name === "Cart" && cartCount() > 0) {
-            <span
-              class="bage bg-red-100 rounded-2xl font-bold p-1 text-xs text-red-800"
-            >
-              {{ cartCount() > 0 ? cartCount() : "" }}
-            </span>
-          }
-        </a>
-      </li>
-    }
-    <span
-      class="material-symbols-outlined absolute right-2.5 cursor-pointer"
-      [matMenuTriggerFor]="menu"
-    >
-      person
-    </span>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>Aliakbar Esmaeili</button>
-      <button mat-menu-item (click)="favorite()">
-        <span class="material-symbols-outlined"> favorite </span>My favorites
-      </button>
-      <button mat-menu-item routerLink="/login">Log out</button>
-    </mat-menu>
-  </ul>
-</nav>
-
-<div class="`h-svh">
+<main class="app-main">
   <router-outlet></router-outlet>
-</div>
+</main>

@@ -1,5 +1,26 @@
-@for (product of products(); track product.id) {
-  @if (productService.favorites().has(product.id)) {
-    <app-home [product]="product" />
+<div class="favorites">
+  <header class="favorites__header">
+    <h1 class="favorites__title">My Favorites</h1>
+    <p class="favorites__subtitle">Products you’ve saved for later</p>
+  </header>
+
+  @if (isLoading()) {
+    <div class="favorites__loading">Loading…</div>
+  } @else if (favoriteProducts().length === 0) {
+    <div class="favorites__empty">
+      <span class="material-symbols-outlined">favorite</span>
+      <p>No favorites yet. Add some from the store!</p>
+    </div>
+  } @else {
+    <div class="favorites__grid">
+      @for (product of favoriteProducts(); track product.id) {
+        <pm-product-card
+          [product]="product"
+          [isFavorite]="true"
+          (addToCart)="addToCart($event)"
+          (toggleFavorite)="productService.toggle($event)"
+        />
+      }
+    </div>
   }
-}
+</div>

@@ -1,0 +1,35 @@
+@let p = product();
+<article class="product-card">
+  <a [routerLink]="['/products', p.id]" class="product-card__link" tabindex="-1">
+    <div class="product-card__image-wrap">
+      <img
+        [src]="apiUrl + (p.image ?? '')"
+        [alt]="p.productName"
+        class="product-card__image"
+        loading="lazy"
+      />
+      <span class="product-card__price">{{ p.price | currency:'USD':'symbol':'1.0-0' }}</span>
+      <button
+        type="button"
+        class="product-card__wish"
+        [class.product-card__wish--active]="isFavorite()"
+        (click)="toggleFavorite.emit(p.id); $event.preventDefault(); $event.stopPropagation()"
+        [attr.aria-label]="isFavorite() ? 'Remove from favorites' : 'Add to favorites'"
+      >
+        <span class="material-symbols-outlined">{{ isFavorite() ? 'favorite' : 'favorite_border' }}</span>
+      </button>
+    </div>
+    <div class="product-card__body">
+      <h3 class="product-card__title">{{ p.productName }}</h3>
+      <p class="product-card__code">{{ p.productCode }}</p>
+      <button
+        type="button"
+        class="product-card__cta"
+        (click)="addToCart.emit(p); $event.preventDefault(); $event.stopPropagation()"
+      >
+        <span class="material-symbols-outlined">shopping_cart</span>
+        Add to cart
+      </button>
+    </div>
+  </a>
+</article>

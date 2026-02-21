@@ -1,13 +1,4 @@
-.nav-link {
-  font-size: large;
-  cursor: pointer;
+.app-main {
+  min-height: calc(100vh - 56px);
+  background: #f8fafc;
 }
-
-.navbar-light .navbar-nav .nav-link.active {
-  color: #007ACC
-}
-
-.navbar-brand {
-  margin-left: 10px;
-}
-

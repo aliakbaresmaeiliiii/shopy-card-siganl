@@ -1,0 +1,45 @@
+@if (showMenu) {
+  <header class="app-header">
+    <nav class="nav-inner">
+      <a routerLink="/welcome" class="brand">{{ pageTitle }}</a>
+      <ul class="nav-links">
+        @for (item of menuItems; track item.id) {
+          <li>
+            <a
+              class="nav-link"
+              [routerLink]="item.routerLink"
+              routerLinkActive="nav-link--active"
+              [routerLinkActiveOptions]="{ exact: item.routerLink === '/welcome' }"
+            >
+              <span class="nav-link-text">{{ item.name }}</span>
+              @if (item.name === "Cart" && cartCount() > 0) {
+                <span class="nav-badge">{{ cartCount() }}</span>
+              }
+            </a>
+          </li>
+        }
+      </ul>
+      <div class="nav-actions">
+        <button type="button" class="user-trigger" [matMenuTriggerFor]="menu" aria-label="Account menu">
+          <span class="user-trigger-icon material-symbols-outlined">account_circle</span>
+          <span class="user-trigger-label">Account</span>
+          <span class="material-symbols-outlined user-trigger-chevron">expand_more</span>
+        </button>
+        <mat-menu #menu="matMenu" panelClass="user-menu" xPosition="before" yPosition="below">
+          <div class="user-menu-header">
+            <span class="material-symbols-outlined">person</span>
+            <span>Aliakbar Esmaeili</span>
+          </div>
+          <button mat-menu-item (click)="favorite()">
+            <span class="material-symbols-outlined">favorite</span>
+            <span>My favorites</span>
+          </button>
+          <button mat-menu-item routerLink="/login">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Log out</span>
+          </button>
+        </mat-menu>
+      </div>
+    </nav>
+  </header>
+}
