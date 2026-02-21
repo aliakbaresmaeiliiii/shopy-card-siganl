@@ -110,6 +110,12 @@
   border-color: rgba(255, 255, 255, 0.12);
 }
 
+.nav-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
 .user-trigger-icon,
 .user-trigger-chevron {
   font-size: 1.25rem;
@@ -155,8 +161,9 @@
   margin-bottom: 0.25rem;
 }
 
-::ng-deep .user-menu .user-menu-header .material-symbols-outlined {
-  font-size: 1.125rem;
+::ng-deep .user-menu .user-menu-header .nav-icon {
+  width: 1.125rem;
+  height: 1.125rem;
   color: #64748b;
 }
 
@@ -167,7 +174,8 @@
   font-size: 0.875rem;
 }
 
-::ng-deep .user-menu .mat-mdc-menu-item .material-symbols-outlined {
-  font-size: 1.125rem;
+::ng-deep .user-menu .mat-mdc-menu-item .nav-icon {
+  width: 1.125rem;
+  height: 1.125rem;
   color: #64748b;
 }

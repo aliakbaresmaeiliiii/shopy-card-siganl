@@ -1,0 +1,23 @@
+<div class="cart-page">
+  <header class="cart-page__header">
+    <a routerLink="/welcome" class="cart-page__back">
+      <svg class="cart-page__back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Continue shopping
+    </a>
+    <div class="cart-page__headings">
+      <h1 class="cart-page__title">Your cart</h1>
+      <p class="cart-page__subtitle">Review your items and proceed to checkout when you're ready.</p>
+    </div>
+  </header>
+
+  <div class="cart-page__layout">
+    <div class="cart-page__list">
+      <sw-cart-list />
+    </div>
+    <aside class="cart-page__aside">
+      <sw-cart-total />
+    </aside>
+  </div>
+</div>

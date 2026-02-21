@@ -1,37 +1,65 @@
 @if (item(); as cartItem) {
-  <div class="grid grid-cols-10 gap-4 items-center">
-
-    <!-- Product -->
-    <div class="col-span-4">
-      <div class="font-medium text-gray-800">
-        {{ cartItem.product.productName }}
+  <div class="cart-item">
+    <a [routerLink]="['/products', cartItem.product.id]" class="cart-item__product">
+      <div class="cart-item__image-wrap">
+        <img
+          [src]="apiUrl + (cartItem.product.image ?? '')"
+          [alt]="cartItem.product.productName"
+          class="cart-item__image"
+        />
       </div>
-      <div class="text-sm text-gray-400">
-        {{ cartItem.product.productCode }}
+      <div class="cart-item__info">
+        <h3 class="cart-item__name">{{ cartItem.product.productName }}</h3>
+        <p class="cart-item__code">{{ cartItem.product.productCode }}</p>
+      </div>
+    </a>
+
+    <div class="cart-item__price">
+      <span class="cart-item__price-label">Price</span>
+      <span class="cart-item__price-value">{{ cartItem.product.price | currency:'USD':'symbol':'1.2-2' }}</span>
+    </div>
+
+    <div class="cart-item__qty">
+      <span class="cart-item__qty-label">Qty</span>
+      <div class="cart-item__stepper">
+        <button
+          type="button"
+          class="cart-item__stepper-btn"
+          [disabled]="cartItem.quantity <= 1"
+          (click)="onQuantityChange(cartItem.quantity - 1)"
+          aria-label="Decrease quantity"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/></svg>
+        </button>
+        <span class="cart-item__stepper-value">{{ cartItem.quantity }}</span>
+        <button
+          type="button"
+          class="cart-item__stepper-btn"
+          [disabled]="cartItem.quantity >= maxQty"
+          (click)="onQuantityChange(cartItem.quantity + 1)"
+          aria-label="Increase quantity"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
       </div>
     </div>
 
-    <!-- Price -->
-    <div class="col-span-2 text-center text-gray-600">
-      {{ cartItem.product.price | currency }}
+    <div class="cart-item__total">
+      <span class="cart-item__total-label">Total</span>
+      <span class="cart-item__total-value">{{ exPrice() | currency:'USD':'symbol':'1.2-2' }}</span>
     </div>
 
-    <!-- Quantity -->
-    <div class="col-span-2 flex justify-center">
-      <select
-        class="border border-gray-300 rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-indigo-500"
-        [ngModel]="cartItem.quantity"
-        (ngModelChange)="onQuantitySelected($event)">
-        @for (q of qtyArr; track q) {
-          <option [value]="q">{{ q }}</option>
-        }
-      </select>
-    </div>
-
-    <!-- Total -->
-    <div class="col-span-2 text-right font-semibold text-gray-800">
-      {{ exPrice() | currency }}
-    </div>
-
+    <button
+      type="button"
+      class="cart-item__remove"
+      (click)="remove()"
+      aria-label="Remove from cart"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        <line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/>
+      </svg>
+      <span class="cart-item__remove-text">Remove</span>
+    </button>
   </div>
 }

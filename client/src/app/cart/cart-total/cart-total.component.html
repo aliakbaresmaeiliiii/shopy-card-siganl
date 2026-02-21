@@ -1,53 +1,40 @@
 @if (cartItems().length) {
-  <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-
-    <!-- Header -->
-    <div class="px-6 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white">
-      <h3 class="text-lg font-semibold tracking-wide">Cart Total</h3>
+  <div class="cart-total">
+    <div class="cart-total__header">
+      <h2 class="cart-total__title">Order summary</h2>
+      <span class="cart-total__count">{{ cartItems().length }} {{ cartItems().length === 1 ? 'item' : 'items' }}</span>
     </div>
 
-    <!-- Body -->
-    <div class="p-6 space-y-4">
-
-      <!-- Subtotal -->
-      <div class="flex justify-between text-gray-700">
-        <span>Subtotal:</span>
-        <span>{{ subTotal() | currency }}</span>
+    <div class="cart-total__body">
+      <div class="cart-total__row">
+        <span class="cart-total__label">Subtotal</span>
+        <span class="cart-total__value">{{ subTotal() | currency:'USD':'symbol':'1.2-2' }}</span>
       </div>
-
-      <!-- Delivery -->
-      <div class="flex justify-between text-gray-700">
-        <span>Delivery:</span>
+      <div class="cart-total__row">
+        <span class="cart-total__label">Delivery</span>
         @if (deliveryFee()) {
-          <span>{{ deliveryFee() | currency }}</span>
+          <span class="cart-total__value">{{ deliveryFee() | currency:'USD':'symbol':'1.2-2' }}</span>
+        } @else {
+          <span class="cart-total__value cart-total__value--free">Free</span>
         }
-        @else {
-          <span class="text-green-600 font-medium">Free</span>
-        }
+      </div>
+      <div class="cart-total__row">
+        <span class="cart-total__label">Estimated tax</span>
+        <span class="cart-total__value">{{ tax() | currency:'USD':'symbol':'1.2-2' }}</span>
       </div>
 
-      <!-- Tax -->
-      <div class="flex justify-between text-gray-700">
-        <span>Estimated Tax:</span>
-        <span>{{ tax() | currency }}</span>
+      <div class="cart-total__divider"></div>
+
+      <div class="cart-total__row cart-total__row--total">
+        <span class="cart-total__label">Total</span>
+        <span class="cart-total__total-value">{{ totalPrice() | currency:'USD':'symbol':'1.2-2' }}</span>
       </div>
 
-      <hr class="border-gray-200">
+      <button type="button" class="cart-total__checkout" (click)="checkout()">
+        Proceed to checkout
+      </button>
 
-      <!-- Total -->
-      <div class="flex justify-between text-gray-800 text-lg font-semibold">
-        <span>Total:</span>
-        <span>{{ totalPrice() | currency }}</span>
-      </div>
-
-      <!-- Checkout Button -->
-      <div class="text-center mt-4">
-        <button (click)="checkout()"
-          class="w-full px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition">
-          Checkout
-        </button>
-      </div>
-
+      <p class="cart-total__secure">Secure checkout. We never store your payment details.</p>
     </div>
   </div>
 }
