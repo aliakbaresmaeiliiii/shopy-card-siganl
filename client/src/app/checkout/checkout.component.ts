@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import type { ValidationResult } from '@angular/forms/signals';
 import {
@@ -29,6 +30,8 @@ export interface formModel {
 @Component({
   selector: 'pm-checkout',
   imports: [
+    CommonModule,
+    CurrencyPipe,
     FormField,
     ReactiveFormsModule,
     CardFormatDirective,

@@ -228,7 +228,7 @@
       </div>
         </div>
         <button class="purchase--btn" type="button" (click)="handlePayment()">
-          Pay {{ totalPrice() | currency: 'USD' : 'symbol' : '1.2-2' }}
+          Pay {{ totalPrice() | number: '1.2-2' }} USD
         </button>
       </form>
     </div>
@@ -240,7 +240,7 @@
       <div class="summary__totals">
         <div class="summary__row">
           <span>Items subtotal</span>
-          <span>{{ subTotal() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+          <span>{{ subTotal() | number: '1.2-2' }} USD</span>
         </div>
         <div class="summary__row">
           <span>Delivery</span>
@@ -248,17 +248,17 @@
             @if (deliveryFee() === 0) {
               Free
             } @else {
-              {{ deliveryFee() | currency: 'USD' : 'symbol' : '1.2-2' }}
+              {{ deliveryFee() | number: '1.2-2' }} USD
             }
           </span>
         </div>
         <div class="summary__row">
           <span>Tax</span>
-          <span>{{ tax() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+          <span>{{ tax() | number: '1.2-2' }} USD</span>
         </div>
         <div class="summary__row summary__row--total">
           <span>Order total</span>
-          <span>{{ totalPrice() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+          <span>{{ totalPrice() | number: '1.2-2' }} USD</span>
         </div>
       </div>
 
@@ -282,7 +282,7 @@
                   <span class="summary__item-qty">Qty: {{ item.quantity }}</span>
                 </div>
                 <span class="summary__item-price">
-                  {{ (item.product.price * item.quantity) | currency: 'USD' : 'symbol' : '1.2-2' }}
+                  {{ (item.product.price * item.quantity) | number: '1.2-2' }} USD
                 </span>
               </li>
             }
