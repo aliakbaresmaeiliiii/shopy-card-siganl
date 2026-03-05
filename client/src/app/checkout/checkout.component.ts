@@ -31,7 +31,6 @@ export interface formModel {
   selector: 'pm-checkout',
   imports: [
     CommonModule,
-    CurrencyPipe,
     FormField,
     ReactiveFormsModule,
     CardFormatDirective,
