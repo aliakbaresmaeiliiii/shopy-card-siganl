@@ -99,16 +99,6 @@ export class CheckoutComponent {
       this.stripe.pay();
     }
 
-    console.log('Payment submitted', {
-      customer: this.checkoutModel(),
-      items: this.cartItems(),
-      totals: {
-        subTotal: this.subTotal(),
-        delivery: this.deliveryFee(),
-        tax: this.tax(),
-        total: this.totalPrice(),
-      },
-      method,
-    });
+
   }
 }
