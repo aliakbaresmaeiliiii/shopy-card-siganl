@@ -1,81 +1,140 @@
 @if (product(); as product) {
-  <div class="card">
-    <div class="card-header">{{ pageTitle() }}</div>
-    <div class="card-body">
-      <div class="grid grid-cols-12">
-        <div class="col-span-2">Name:</div>
-        <div class="col-span-6">{{ product.productName }}</div>
-        <div class="col-span-3">
-          <button matButton="filled" (click)="addToCart(product)">
-            Add to Cart
+  <section class="product-detail">
+    <div class="product-detail__layout">
+      <!-- Left: Media / gallery -->
+      <div class="product-detail__media">
+        <div class="product-detail__image-main">
+          <img
+            [src]="apiUrl + (product.image ?? '')"
+            [alt]="product.productName"
+            loading="lazy"
+          />
+        </div>
+        <div class="product-detail__thumbs">
+          <button class="product-detail__thumb is-active" type="button">
+            <img
+              [src]="apiUrl + (product.image ?? '')"
+              [alt]="product.productName"
+              loading="lazy"
+            />
           </button>
         </div>
       </div>
-      <div class="grid grid-cols-12">
-        <div class="col-span-2">Code:</div>
-        <div class="col-span-6">{{ product.productCode }}</div>
-      </div>
-      <div class="grid grid-cols-12">
-        <div class="col-span-2">Description:</div>
-        <div class="col-span-6">{{ product.description }}</div>
-      </div>
-      <div class="grid grid-cols-12">
-        <div class="col-span-2">Price:</div>
-        <div class="col-span-6">
-          {{ product.price | currency: "USD" : "symbol" }}
+
+      <!-- Middle: Title, meta, description -->
+      <div class="product-detail__info">
+        <h1 class="product-detail__title">
+          {{ product.productName }}
+        </h1>
+
+        <div class="product-detail__meta">
+          <span class="product-detail__code">
+            Code:
+            <strong>{{ product.productCode }}</strong>
+          </span>
+
+          <span
+            class="product-detail__stock"
+            [class.product-detail__stock--in]="(product.quantityInStock ?? 0) > 0"
+            [class.product-detail__stock--out]="(product.quantityInStock ?? 0) === 0"
+          >
+            @if ((product.quantityInStock ?? 0) > 0) {
+              In stock
+            } @else {
+              Currently unavailable
+            }
+          </span>
         </div>
-      </div>
-      <div class="grid grid-cols-12">
-        <div class="col-span-2">In Stock:</div>
-        <div class="col-span-6">{{ product.quantityInStock ?? 0 }}</div>
-      </div>
-      <div class="table-responsive">
-        @if (product.reviews) {
-          <table class="table mb-0">
-            <thead>
-              <tr>
-                <th>Review</th>
-                <th>Username</th>
-                <th>Text</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (review of product.reviews; track review) {
-                <tr>
-                  <td>{{ review.title }}</td>
-                  <td>{{ review.userName }}</td>
-                  <td>{{ review.text }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        } @else {
-          No reviews for this product
-        }
-      </div>
-    </div>
-  </div>
-} @else {
-  <div class="flex items-center justify-center py-24">
-    <div class="flex items-center gap-6 text-gray-600">
-      <div class="text-6xl animate-pulse">←</div>
-      <div class="text-left">
-        <h2 class="text-2xl font-semibold mb-2">Select a product</h2>
-        <p class="text-gray-500">
-          Choose an item from the list on the left to view its details.
+
+        <p class="product-detail__description">
+          {{ product.description || 'No description available for this product yet.' }}
         </p>
+
+        <ul class="product-detail__highlights">
+          <li>Premium quality, carefully selected for you.</li>
+          <li>Secure checkout and fast delivery.</li>
+          <li>30-day easy returns on eligible items.</li>
+        </ul>
       </div>
+
+      <!-- Right: Buy box -->
+      <aside class="product-detail__buy">
+        <div class="buy-box">
+          <div class="buy-box__price-row">
+            <span class="buy-box__price-label">Price:</span>
+            <span class="buy-box__price-value">
+              {{ product.price | currency: 'USD':'symbol':'1.2-2' }}
+            </span>
+          </div>
+
+          <div class="buy-box__stock-line">
+            <span
+              class="buy-box__stock"
+              [class.buy-box__stock--in]="(product.quantityInStock ?? 0) > 0"
+              [class.buy-box__stock--out]="(product.quantityInStock ?? 0) === 0"
+            >
+              @if ((product.quantityInStock ?? 0) > 0) {
+                In stock — {{ product.quantityInStock }} available
+              } @else {
+                Out of stock
+              }
+            </span>
+          </div>
+
+          <button
+            mat-button
+            color="primary"
+            class="buy-box__cta"
+            [disabled]="(product.quantityInStock ?? 0) === 0"
+            (click)="addToCart(product)"
+          >
+            Add to Cart
+          </button>
+
+          <p class="buy-box__note">
+            Ships from and sold by Shopy Card. Gift-wrap available.
+          </p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Reviews -->
+    <section class="product-detail__reviews">
+      <h2 class="product-detail__reviews-title">Customer reviews</h2>
+
+      @if (product.reviews && product.reviews.length > 0) {
+        <div class="reviews-list">
+          @for (review of product.reviews; track review) {
+            <article class="review">
+              <h3 class="review__title">{{ review.title }}</h3>
+              <p class="review__meta">
+                By <strong>{{ review.userName }}</strong>
+              </p>
+              <p class="review__text">
+                {{ review.text }}
+              </p>
+            </article>
+          }
+        </div>
+      } @else {
+        <p class="product-detail__no-reviews">
+          There are no reviews for this product yet.
+        </p>
+      }
+    </section>
+  </section>
+} @else {
+  <div class="product-detail__empty">
+    <div class="product-detail__empty-icon">←</div>
+    <div>
+      <h2>Select a product</h2>
+      <p>Choose an item from the list on the left to view its details.</p>
     </div>
   </div>
 }
 
 @if (errorMessage()) {
-  <div class="card">
-    <div class="card-header">Product Detail</div>
-  </div>
-}
-@if (errorMessage()) {
-  <div class="alert alert-danger">
+  <div class="product-detail__error">
     {{ errorMessage() }}
   </div>
 }

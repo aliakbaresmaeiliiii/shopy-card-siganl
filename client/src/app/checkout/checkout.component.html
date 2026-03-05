@@ -1,8 +1,20 @@
-<!-- From Uiverse.io by zanina-yassine -->
-<div class="modal m-auto">
-  <form class="form">
-    <div class="payment--options">
-      <button name="paypal" type="button" (click)="selectMethod('paypal')">
+<section class="checkout">
+  <div class="checkout__layout">
+    <!-- Left: payment form -->
+    <div class="checkout__panel checkout__panel--form modal">
+      <form class="form">
+        <h1 class="checkout__title">Checkout</h1>
+        <p class="checkout__subtitle">
+          Choose your payment method and complete your secure purchase.
+        </p>
+
+        <div class="payment--options">
+      <button
+        name="paypal"
+        type="button"
+        (click)="selectMethod('paypal')"
+        [class.payment--option-active]="selectedMethod() === 'paypal'"
+      >
         <svg
           xml:space="preserve"
           viewBox="0 0 124 33"
@@ -57,7 +69,12 @@
           ></path>
         </svg>
       </button>
-      <button name="apple-pay" type="button" (click)="selectMethod('stripe')">
+      <button
+        name="apple-pay"
+        type="button"
+        (click)="selectMethod('stripe')"
+        [class.payment--option-active]="selectedMethod() === 'stripe'"
+      >
         <svg
           xml:space="preserve"
           viewBox="0 0 512 210.2"
@@ -80,7 +97,7 @@
           <g></g>
         </svg>
       </button>
-      <button name="google-pay" type="button">
+      <button name="google-pay" type="button" disabled>
         <svg
           fill="none"
           viewBox="0 0 80 39"
@@ -125,13 +142,13 @@
           </defs>
         </svg>
       </button>
-    </div>
-    <div class="separator">
+        </div>
+        <div class="separator">
       <hr class="line" />
       <p>or pay using credit card</p>
       <hr class="line" />
-    </div>
-    <div class="credit-card-info--form">
+        </div>
+        <div class="credit-card-info--form">
       <div class="input_container">
         <label for="password_field" class="input_label"
           >Card holder full name</label
@@ -209,9 +226,69 @@
           />
         </div>
       </div>
+        </div>
+        <button class="purchase--btn" type="button" (click)="handlePayment()">
+          Pay {{ totalPrice() | currency: 'USD' : 'symbol' : '1.2-2' }}
+        </button>
+      </form>
     </div>
-    <button class="purchase--btn" type="button" (click)="handlePayment()">
-      Checkout
-    </button>
-  </form>
-</div>
+
+    <!-- Right: order summary -->
+    <aside class="checkout__panel checkout__panel--summary">
+      <h2 class="summary__title">Order summary</h2>
+
+      <div class="summary__totals">
+        <div class="summary__row">
+          <span>Items subtotal</span>
+          <span>{{ subTotal() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+        </div>
+        <div class="summary__row">
+          <span>Delivery</span>
+          <span>
+            @if (deliveryFee() === 0) {
+              Free
+            } @else {
+              {{ deliveryFee() | currency: 'USD' : 'symbol' : '1.2-2' }}
+            }
+          </span>
+        </div>
+        <div class="summary__row">
+          <span>Tax</span>
+          <span>{{ tax() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+        </div>
+        <div class="summary__row summary__row--total">
+          <span>Order total</span>
+          <span>{{ totalPrice() | currency: 'USD' : 'symbol' : '1.2-2' }}</span>
+        </div>
+      </div>
+
+      <div class="summary__items">
+        <h3 class="summary__items-title">
+          Items in your cart ({{ cartItems().length }})
+        </h3>
+
+        @if (cartItems().length === 0) {
+          <p class="summary__empty">
+            Your cart is empty. Add some products before checking out.
+          </p>
+        } @else {
+          <ul class="summary__list">
+            @for (item of cartItems(); track item.product.id) {
+              <li class="summary__item">
+                <div class="summary__item-main">
+                  <span class="summary__item-name">
+                    {{ item.product.productName }}
+                  </span>
+                  <span class="summary__item-qty">Qty: {{ item.quantity }}</span>
+                </div>
+                <span class="summary__item-price">
+                  {{ (item.product.price * item.quantity) | currency: 'USD' : 'symbol' : '1.2-2' }}
+                </span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </aside>
+  </div>
+</section>

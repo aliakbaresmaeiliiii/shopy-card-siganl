@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import type { ValidationResult } from '@angular/forms/signals';
 import {
@@ -10,11 +10,9 @@ import {
   required,
   validate,
 } from '@angular/forms/signals';
-import { PAYMENT_TOKEN } from '../core/payments/payment.token';
 import { PaypalService } from '../core/services/paypal.service';
 import { StripService } from '../core/services/strip.service';
-import { luhnValidator } from '../utilities/validations/luhnValidator';
-import { max } from 'rxjs';
+import { CartService } from '../cart/cart.service';
 import {
   CardFormatDirective,
   CvvDirective,
@@ -41,9 +39,17 @@ export interface formModel {
   styleUrl: './checkout.component.css',
 })
 export class CheckoutComponent {
-  paymentService = inject(PAYMENT_TOKEN);
+  private cartService = inject(CartService);
   private paypal = inject(PaypalService);
   private stripe = inject(StripService);
+
+  cartItems = this.cartService.cartItems;
+  subTotal = this.cartService.subTotal;
+  deliveryFee = this.cartService.deliveryFee;
+  tax = this.cartService.tax;
+  totalPrice = this.cartService.totalPrice;
+
+  selectedMethod = signal<'paypal' | 'stripe'>('paypal');
 
   checkoutModel = signal<formModel>({
     name: '',
@@ -117,19 +123,34 @@ export class CheckoutComponent {
   cardNumberField = this.checkoutForm.cardNumber;
 
   selectMethod(type: string) {
-    this.paymentService = type === 'paypal' ? this.paypal : this.stripe;
+    this.selectedMethod.set(type === 'stripe' ? 'stripe' : 'paypal');
   }
 
   handlePayment() {
-    const data = this.checkoutForm().value();
-    console.log('👍👍👍', data);
+    const formState = this.checkoutForm();
 
-    // if (this.checkoutForm().valid()) {
-    //   debugger;
-    //   this.paymentService.pay();
-    //   console.log('Payment submitted', this.checkoutModel());
-    // } else {
-    //   console.warn('Form invalid', this.checkoutForm().errors());
-    // }
+    if (!formState.valid()) {
+      console.warn('Checkout form invalid', formState.errors());
+      return;
+    }
+
+    const method = this.selectedMethod();
+    if (method === 'paypal') {
+      this.paypal.pay();
+    } else {
+      this.stripe.pay();
+    }
+
+    console.log('Payment submitted', {
+      customer: this.checkoutModel(),
+      items: this.cartItems(),
+      totals: {
+        subTotal: this.subTotal(),
+        delivery: this.deliveryFee(),
+        tax: this.tax(),
+        total: this.totalPrice(),
+      },
+      method,
+    });
   }
 }

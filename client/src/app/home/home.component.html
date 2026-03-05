@@ -2,35 +2,19 @@
   <header class="home__header">
     <h1 class="home__title">Welcome to Our Store</h1>
     <p class="home__subtitle">
-      Browse our latest products and add them to your cart
+      Discover a curated selection of products with smooth filters and fast search.
     </p>
   </header>
 
-  <div class="home__grid">
-    @if (isLoading()) {
-      @for (item of skeletonItems(); track $index) {
-        <app-product-skeleton />
-      }
-    } @else {
-      @for (product of products(); track product.id) {
-        <pm-product-card
-          [product]="product"
-          [isFavorite]="productService.isFavorite(product.id)"
-          (addToCart)="addToCart($event)"
-          (toggleFavorite)="productService.toggle($event)"
-        />
-      }
-      @empty {
-        <p class="home__empty">There are no products yet.</p>
-      }
-    }
-  </div>
-
-  @if (!isLoading() && products().length > 0) {
-    <div class="home__load">
-      <button type="button" class="home__load-btn" (click)="loadMore()">
-        Load more
-      </button>
+  <section class="home__hero">
+    <div class="home__hero-content">
+      <h2>Start shopping</h2>
+      <p>
+        Browse all products on our main catalog page with Amazon-style filters and details.
+      </p>
+      <a routerLink="/products" class="home__hero-button">
+        Go to products
+      </a>
     </div>
-  }
+  </section>
 </div>

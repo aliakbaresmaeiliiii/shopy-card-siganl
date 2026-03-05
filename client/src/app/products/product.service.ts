@@ -23,8 +23,6 @@ import { Product, Result } from './product';
   providedIn: 'root',
 })
 export class ProductService {
-  private productsUrl = 'api/products';
-  // private productsUrl = `${environment.apiUrl}/product`;
   private storeProductSubject = new BehaviorSubject<Product[]>([]);
   storeProduct$ = this.storeProductSubject.asObservable();
   private _favorites = signal<Set<number>>(new Set());
@@ -61,19 +59,8 @@ export class ProductService {
 
   selectedProductId = signal<number | undefined>(undefined);
 
-  private productsResult$ = this.http.get<Product[]>(this.productsUrl).pipe(
-    map((p) => ({ data: p }) as Result<Product[]>),
-    tap((p) => console.log(JSON.stringify(p))),
-    shareReplay(1),
-    tap(() => console.log('After shareReplay')),
-
-    catchError((error) =>
-      of({
-        data: [],
-        err: this.errorService.formatError(error),
-      } as Result<Product[]>),
-    ),
-  );
+  // All products for catalog view – first page with a high limit
+  private productsResult$ = this.getAllProducts(1, 100).pipe(shareReplay(1));
 
   getAllProducts(
     page: number = 1,
@@ -99,13 +86,31 @@ export class ProductService {
     initialValue: { data: [] } as Result<Product[]>,
   });
 
-  products = computed(() => this.productsResult().data);
+  // Always expose a plain Product[] array, regardless of backend shape
+  products = computed<Product[]>(() => {
+    const result = this.productsResult();
+    const raw: any = result?.data;
+
+    if (Array.isArray(raw)) {
+      return raw;
+    }
+
+    if (raw && Array.isArray(raw.data)) {
+      return raw.data;
+    }
+
+    if (raw && raw.data && Array.isArray(raw.data.data)) {
+      return raw.data.data;
+    }
+
+    return [];
+  });
   producstError = computed(() => this.productsResult().error);
 
   private productResult$ = toObservable(this.selectedProductId).pipe(
     filter(Boolean),
     switchMap((id) => {
-      const productUrl = this.productsUrl + '/' + id;
+      const productUrl = `${this.api}/${id}`;
       return this.http.get<Product>(productUrl).pipe(
         tap(() => console.log('in http.get by id pipeLine')),
         switchMap((product) => this.getProductWithReview(product)),

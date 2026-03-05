@@ -1,51 +1,133 @@
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8 mx-2">
-  <!-- Product List -->
-  <div class="lg:col-span-4">
-    <div class="bg-gray-100 rounded-xl shadow-sm border border-gray-200">
-      <div class="px-4 py-3 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-800">
-          {{ pageTitle }}
-        </h2>
+<section class="catalog">
+  <!-- Top chips / navigation row -->
+  <div class="catalog-top">
+    <div class="catalog-top__pills">
+      <button class="catalog-pill catalog-pill--active" type="button">All</button>
+      <button class="catalog-pill" type="button">Pet Supplies</button>
+      <button class="catalog-pill" type="button">Furniture</button>
+      <button class="catalog-pill" type="button">TVs &amp; Accessories</button>
+      <button class="catalog-pill" type="button">Home &amp; Kitchen</button>
+      <button class="catalog-pill" type="button">Grocery</button>
+      <button class="catalog-pill" type="button">Health &amp; Beauty</button>
+      <button class="catalog-pill" type="button">Electronics</button>
+    </div>
+  </div>
+
+  <div class="catalog-layout">
+    <!-- Left: Filters -->
+    <aside class="catalog-filters">
+      <h2 class="catalog-filters__title">Filters</h2>
+
+      <!-- Search -->
+      <div class="catalog-filters__block">
+        <p class="catalog-filters__label">Search</p>
+        <input
+          type="text"
+          class="catalog-filters__search"
+          placeholder="Search by name, code, or description"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="onSearchChange($event)"
+        />
       </div>
 
-      @if (products(); as products) {
-        <div class="p-3">
-          <ul class="space-y-1">
-            @for (product of products; track product) {
-              <li>
-                <button
-                  type="button"
-                  class="w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-indigo-50 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  [ngClass]="{
-                    'bg-indigo-600 text-white hover:bg-indigo-600 hover:text-white':
-                      product.id === selectedProductId(),
-                  }"
-                  (click)="onSelected(product.id)"
-                >
-                  {{ product.productName }}
-                </button>
-              </li>
+      <!-- Price -->
+      <div class="catalog-filters__block">
+        <p class="catalog-filters__label">Price</p>
+        <div class="catalog-filters__price-row">
+          <input
+            type="number"
+            class="catalog-filters__price-input"
+            placeholder="Min"
+            [ngModel]="minPrice() ?? ''"
+            (ngModelChange)="onMinPriceChange($event)"
+          />
+          <span class="catalog-filters__price-sep">–</span>
+          <input
+            type="number"
+            class="catalog-filters__price-input"
+            placeholder="Max"
+            [ngModel]="maxPrice() ?? ''"
+            (ngModelChange)="onMaxPriceChange($event)"
+          />
+        </div>
+      </div>
+
+      <!-- Stock -->
+      <div class="catalog-filters__block catalog-filters__block--checkbox">
+        <label class="catalog-filters__checkbox">
+          <input
+            type="checkbox"
+            [ngModel]="inStockOnly()"
+            (ngModelChange)="inStockOnly.set($event)"
+          />
+          <span>In stock only</span>
+        </label>
+      </div>
+
+      <!-- Reviews -->
+      <div class="catalog-filters__block catalog-filters__block--checkbox">
+        <label class="catalog-filters__checkbox">
+          <input
+            type="checkbox"
+            [ngModel]="withReviewsOnly()"
+            (ngModelChange)="withReviewsOnly.set($event)"
+          />
+          <span>Only products with reviews</span>
+        </label>
+      </div>
+
+      <!-- Sort -->
+      <div class="catalog-filters__block">
+        <p class="catalog-filters__label">Sort by</p>
+        <select
+          class="catalog-filters__select"
+          [ngModel]="sortBy()"
+          (ngModelChange)="onSortChange($event)"
+        >
+          <option value="relevance">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A to Z</option>
+          <option value="name-desc">Name: Z to A</option>
+        </select>
+      </div>
+    </aside>
+
+    <!-- Right: Products grid -->
+    <main class="catalog-results">
+      <header class="catalog-results__header">
+        <h1 class="catalog-results__title">{{ pageTitle }}</h1>
+        <p class="catalog-results__meta">
+          @if (filteredProducts(); as list) {
+            {{ list.length }} results
+          }
+        </p>
+      </header>
+
+      @if (filteredProducts(); as products) {
+        @if (products.length > 0) {
+          <div class="catalog-results__grid">
+            @for (product of products; track product.id) {
+              <pm-product-card
+                [product]="product"
+                [isFavorite]="productService.isFavorite(product.id)"
+                (addToCart)="onAddToCart($event)"
+                (toggleFavorite)="onToggleFavorite($event)"
+              />
             }
-          </ul>
+          </div>
+        } @else {
+          <p class="catalog-results__empty">
+            No products match your filters. Try adjusting them or clearing the search.
+          </p>
+        }
+      }
+
+      @if (errorMessage()) {
+        <div class="catalog-results__error">
+          {{ errorMessage() }}
         </div>
       }
-    </div>
-
-    @if (errorMessage()) {
-      <div
-        class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
-      >
-        {{ errorMessage() }}
-      </div>
-    }
+    </main>
   </div>
-
-  <!-- Product Detail -->
-  <div class="lg:col-span-8">
-    <div
-      class="bg-gray-100 rounded-xl shadow-sm border border-gray-200 p-4 h-full"
-    >
-      <pm-product-detail />
-    </div>
-  </div>
-</div>
+</section>

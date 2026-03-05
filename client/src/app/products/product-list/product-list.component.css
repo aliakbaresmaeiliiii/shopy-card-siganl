@@ -1,0 +1,220 @@
+/* Page shell */
+.catalog {
+  max-width: 1440px;
+  margin: 1.5rem auto 2.5rem;
+  padding: 0 1rem;
+}
+
+/* Top pills row */
+.catalog-top {
+  margin-bottom: 0.75rem;
+  overflow-x: auto;
+}
+
+.catalog-top__pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.catalog-pill {
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  color: #374151;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+.catalog-pill:hover {
+  background: #f3f4f6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+}
+
+.catalog-pill--active {
+  border-color: #2563eb;
+  background: #e0f2fe;
+  color: #1d4ed8;
+  box-shadow:
+    0 0 0 1px rgba(37, 99, 235, 0.3),
+    0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+/* Layout */
+.catalog-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+/* Filters */
+.catalog-filters {
+  position: sticky;
+  top: 4.5rem;
+  align-self: flex-start;
+  padding: 1rem 1.1rem 1.25rem;
+  background: #ffffff;
+  border-radius: 0.9rem;
+  border: 1px solid #e5e7eb;
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.catalog-filters__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.catalog-filters__block {
+  padding: 0.6rem 0;
+  border-top: 1px solid #f3f4f6;
+}
+
+.catalog-filters__block:first-of-type {
+  border-top: none;
+}
+
+.catalog-filters__label {
+  margin: 0 0 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.catalog-filters__search {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.catalog-filters__search:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
+}
+
+.catalog-filters__price-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.catalog-filters__price-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.catalog-filters__price-sep {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.catalog-filters__block--checkbox {
+  padding-top: 0.35rem;
+}
+
+.catalog-filters__checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: #374151;
+  cursor: pointer;
+}
+
+.catalog-filters__checkbox input[type='checkbox'] {
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 0.25rem;
+  border: 1px solid #d1d5db;
+}
+
+.catalog-filters__select {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.8rem;
+  background: #ffffff;
+}
+
+/* Results */
+.catalog-results {
+  padding: 0.6rem 0.3rem;
+}
+
+.catalog-results__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.catalog-results__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+}
+
+.catalog-results__meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.catalog-results__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.catalog-results__empty {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.catalog-results__error {
+  margin-top: 1rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.6rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .catalog-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .catalog-filters {
+    position: static;
+    order: 2;
+  }
+}
+
