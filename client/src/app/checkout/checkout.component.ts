@@ -75,51 +75,7 @@ export class CheckoutComponent {
       message: 'Expire date must be in MM/YY format',
     });
 
-    // validate(checkout.cardNumber, (field): ValidationResult => {
-    //   const value = field.value();
-    //   if (!value) return null;
 
-    //   const digitsOnly = value.replace(/\s+/g, '');
-
-    //   if (!/^\d+$/.test(digitsOnly)) {
-    //     return {
-    //       kind: 'invalidFormat',
-    //       message: 'Card number must be digits only',
-    //     };
-    //   }
-
-    //   if (digitsOnly.length < 13 || digitsOnly.length > 16) {
-    //     return {
-    //       kind: 'lengthInvalid',
-    //       message: 'Card number must be 13–16 digits',
-    //     };
-    //   }
-
-    //   // Luhn check
-    //   let sum = 0;
-    //   let shouldDouble = false;
-
-    //   for (let i = digitsOnly.length - 1; i >= 0; i--) {
-    //     let digit = Number(digitsOnly[i]);
-
-    //     if (shouldDouble) {
-    //       digit *= 2;
-    //       if (digit > 9) digit -= 9;
-    //     }
-
-    //     sum += digit;
-    //     shouldDouble = !shouldDouble;
-    //   }
-
-    //   if (sum % 10 !== 0) {
-    //     return {
-    //       kind: 'luhnInvalid',
-    //       message: 'Card number is invalid',
-    //     };
-    //   }
-
-    //   return null;
-    // });
   });
   nameField = this.checkoutForm.name;
   cardNumberField = this.checkoutForm.cardNumber;
