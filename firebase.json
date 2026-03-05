@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "client/dist/apm",
+    "public": "client/dist/shopy-cart/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
