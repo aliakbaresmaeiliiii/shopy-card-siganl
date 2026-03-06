@@ -52,7 +52,7 @@ export class ProductService {
     this.storeProductSubject.next(updated);
   }
 
-  api = `${environment.apiUrl}/api/product`;
+  api = `${environment.apiUrl}/product`;
   http = inject(HttpClient);
   errorService = inject(HttpErrorService);
   reviewService = inject(ReviewService);
@@ -67,13 +67,13 @@ export class ProductService {
     limit: number = 10,
   ): Observable<Result<Product[]>> {
     return this.http
-      .get<Product[]>(`${this.api}?page=${page}&limit=${limit}`)
+      .get<{ data: Product[] }>(`${this.api}?page=${page}&limit=${limit}`)
       .pipe(
-        map((p) => ({ data: p }) as Result<Product[]>),
+        map((res) => ({ data: res?.data ?? [] }) as Result<Product[]>),
         catchError((error) =>
           of({
             data: [],
-            err: this.errorService.formatError(error),
+            error: this.errorService.formatError(error),
           } as Result<Product[]>),
         ),
       );
@@ -105,7 +105,7 @@ export class ProductService {
 
     return [];
   });
-  producstError = computed(() => this.productsResult().error);
+  producstError = computed(() => this.productsResult()?.error);
 
   private productResult$ = toObservable(this.selectedProductId).pipe(
     filter(Boolean),

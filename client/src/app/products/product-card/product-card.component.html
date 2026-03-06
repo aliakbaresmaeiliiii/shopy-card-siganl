@@ -3,7 +3,7 @@
   <a [routerLink]="['/products', p.id]" class="product-card__link" tabindex="-1">
     <div class="product-card__image-wrap">
       <img
-        [src]="apiUrl + (p.image ?? '')"
+        [src]="imageSrc(p.image)"
         [alt]="p.productName"
         class="product-card__image"
         loading="lazy"

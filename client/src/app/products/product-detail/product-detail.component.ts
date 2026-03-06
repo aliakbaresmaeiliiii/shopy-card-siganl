@@ -30,6 +30,14 @@ export class ProductDetailComponent {
     }
   }
 
+  /** Use CDN image when absolute URL, otherwise backend-relative. */
+  imageSrc(image: string | undefined): string {
+    if (!image) return '';
+    return image.startsWith('http://') || image.startsWith('https://')
+      ? image
+      : this.apiUrl + image;
+  }
+
   pageTitle = computed(() => {
     const product = this.product();
     return product

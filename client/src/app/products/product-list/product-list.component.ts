@@ -16,7 +16,7 @@ export class ProductListComponent {
   cartService = inject(CartService);
 
   products = this.productService.products;
-  errorMessage = this.productService.productError;
+  errorMessage = this.productService.producstError;
 
   // Filter & sort state
   searchTerm = signal<string>('');
@@ -105,18 +105,20 @@ export class ProductListComponent {
   }
 
   // Handlers for template bindings
-  onSearchChange(value: string): void {
-    this.searchTerm.set(value);
+  onSearchChange(value: string | null | undefined): void {
+    this.searchTerm.set(String(value ?? ''));
   }
 
-  onMinPriceChange(value: string): void {
-    const v = value.trim();
-    this.minPrice.set(v === '' ? null : Number(v));
+  onMinPriceChange(value: string | number): void {
+    const v = String(value ?? '').trim();
+    const num = v === '' ? null : Number(v);
+    this.minPrice.set(Number.isNaN(num) ? null : num);
   }
 
-  onMaxPriceChange(value: string): void {
-    const v = value.trim();
-    this.maxPrice.set(v === '' ? null : Number(v));
+  onMaxPriceChange(value: string | number): void {
+    const v = String(value ?? '').trim();
+    const num = v === '' ? null : Number(v);
+    this.maxPrice.set(Number.isNaN(num) ? null : num);
   }
 
   onSortChange(value: string): void {

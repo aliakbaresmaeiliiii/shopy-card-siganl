@@ -5,7 +5,7 @@
       <div class="product-detail__media">
         <div class="product-detail__image-main">
           <img
-            [src]="apiUrl + (product.image ?? '')"
+            [src]="imageSrc(product.image)"
             [alt]="product.productName"
             loading="lazy"
           />
@@ -13,7 +13,7 @@
         <div class="product-detail__thumbs">
           <button class="product-detail__thumb is-active" type="button">
             <img
-              [src]="apiUrl + (product.image ?? '')"
+              [src]="imageSrc(product.image)"
               [alt]="product.productName"
               loading="lazy"
             />
@@ -92,7 +92,7 @@
           </button>
 
           <p class="buy-box__note">
-            Ships from and sold by Shopy Card. Gift-wrap available.
+            Ships from and sold by Raavishop. Gift-wrap available.
           </p>
         </div>
       </aside>

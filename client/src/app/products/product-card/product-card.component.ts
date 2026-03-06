@@ -24,6 +24,14 @@ export class ProductCardComponent {
   toggleFavorite = output<number>();
 
   /** Display rating: use input or default to 4.0 for display. */
+  /** Use CDN image when absolute URL, otherwise backend-relative. */
+  imageSrc(image: string | undefined): string {
+    if (!image) return '';
+    return image.startsWith('http://') || image.startsWith('https://')
+      ? image
+      : this.apiUrl + image;
+  }
+
   displayRating(): number {
     const r = this.rating();
     return r !== undefined && r >= 0 ? r : 4;

@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "client/dist/shopy-cart/browser",
+    "public": "client/dist/raavishop/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -10,7 +10,7 @@
       {
         "source": "/api/**",
         "run": {
-          "serviceId": "shopy-server",
+          "serviceId": "raavishop-server",
           "region": "us-central1"
         }
       },
