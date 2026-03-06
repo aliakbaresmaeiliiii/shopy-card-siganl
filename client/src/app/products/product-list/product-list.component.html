@@ -104,7 +104,13 @@
         </p>
       </header>
 
-      @if (filteredProducts(); as products) {
+      @if (productService.loading() && productService.products().length === 0) {
+        <div class="catalog-results__skeleton-grid" aria-busy="true">
+          @for (i of skeletonItems; track i) {
+            <pm-product-card-skeleton />
+          }
+        </div>
+      } @else if (filteredProducts(); as products) {
         @if (products.length > 0) {
           <div class="catalog-results__grid">
             @for (product of products; track product.id) {
@@ -116,6 +122,13 @@
               />
             }
           </div>
+          <div #loadMoreSentinel class="catalog-results__sentinel"></div>
+          @if (productService.loading() && productService.products().length > 0) {
+            <p class="catalog-results__loading-more">Loading more…</p>
+          }
+          @if (productService.products().length > 0 && !productService.hasMore() && !productService.loading()) {
+            <p class="catalog-results__end">You’ve seen all products.</p>
+          }
         } @else {
           <p class="catalog-results__empty">
             No products match your filters. Try adjusting them or clearing the search.

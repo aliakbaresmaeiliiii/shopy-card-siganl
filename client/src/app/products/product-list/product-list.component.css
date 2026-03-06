@@ -194,10 +194,67 @@
   color: #6b7280;
 }
 
+/* Product grid – same layout as skeleton */
 .catalog-results__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .catalog-results__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .catalog-results__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* YouTube-style skeleton grid */
+.catalog-results__skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .catalog-results__skeleton-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .catalog-results__skeleton-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Sentinel for infinite scroll (IntersectionObserver target) */
+.catalog-results__sentinel {
+  height: 1px;
+  width: 100%;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.catalog-results__loading,
+.catalog-results__loading-more,
+.catalog-results__end {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.catalog-results__loading {
+  padding: 2rem 1rem;
+}
+
+.catalog-results__loading-more {
+  padding: 0.75rem;
 }
 
 .catalog-results__empty {

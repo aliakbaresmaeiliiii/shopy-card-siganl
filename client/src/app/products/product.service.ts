@@ -9,8 +9,6 @@ import {
   Observable,
   of,
   shareReplay,
-  startWith,
-  Subject,
   switchMap,
   tap,
   throwError,
@@ -20,6 +18,8 @@ import { Review } from '../reviews/review';
 import { ReviewService } from '../reviews/review.service';
 import { HttpErrorService } from '../utilities/http-error.service';
 import { Product, Result } from './product';
+
+const PAGE_SIZE = 20;
 
 @Injectable({
   providedIn: 'root',
@@ -61,17 +61,60 @@ export class ProductService {
 
   selectedProductId = signal<number | undefined>(undefined);
 
-  private refreshProducts$ = new Subject<void>();
+  // Paginated catalog: load pages via API as user scrolls
+  private accumulatedProducts = signal<Product[]>([]);
+  private currentPage = signal(0);
+  private loadError = signal<string | undefined>(undefined);
+  private _hasMore = signal(true);
 
-  // All products for catalog view – first page with a high limit; refetch on refreshProducts$
-  private productsResult$ = this.refreshProducts$.pipe(
-    startWith(undefined),
-    switchMap(() => this.getAllProducts(1, 100)),
-    shareReplay(1),
-  );
+  loading = signal(false);
+  hasMore = this._hasMore.asReadonly();
+
+  products = computed<Product[]>(() => this.accumulatedProducts());
+
+  producstError = computed(() => this.loadError());
+
+  /** Load first page (resets list). Call when entering product list or on refresh. */
+  loadInitial(): void {
+    if (this.loading()) return;
+    this.loadError.set(undefined);
+    this.accumulatedProducts.set([]);
+    this.currentPage.set(0);
+    this._hasMore.set(true);
+    this.loadNextPage();
+  }
+
+  /** Load next page and append. Called on scroll near bottom or after loadInitial. */
+  loadMore(): void {
+    if (this.loading() || !this._hasMore()) return;
+    this.loadNextPage();
+  }
+
+  private loadNextPage(): void {
+    if (this.loading()) return;
+    const next = this.currentPage() + 1;
+    this.loading.set(true);
+    this.loadError.set(undefined);
+    this.http
+      .get<{ data: Product[] }>(`${this.api}?page=${next}&limit=${PAGE_SIZE}`)
+      .pipe(
+        map((res) => res?.data ?? []),
+        catchError((error) => {
+          this.loadError.set(this.errorService.formatError(error));
+          this.loading.set(false);
+          return of([]);
+        }),
+      )
+      .subscribe((data) => {
+        this.currentPage.set(next);
+        this.accumulatedProducts.update((prev) => [...prev, ...data]);
+        this._hasMore.set(data.length >= PAGE_SIZE);
+        this.loading.set(false);
+      });
+  }
 
   refreshProducts(): void {
-    this.refreshProducts$.next();
+    this.loadInitial();
   }
 
   getAllProducts(
@@ -90,34 +133,6 @@ export class ProductService {
         ),
       );
   }
-  // private productsResult = toSignal(this.productsResult$, {
-  //   initialValue: { data: [] } as Result<Product[]>,
-  // });
-
-  productsResult = toSignal(this.productsResult$, {
-    initialValue: { data: [] } as Result<Product[]>,
-  });
-
-  // Always expose a plain Product[] array, regardless of backend shape
-  products = computed<Product[]>(() => {
-    const result = this.productsResult();
-    const raw: any = result?.data;
-
-    if (Array.isArray(raw)) {
-      return raw;
-    }
-
-    if (raw && Array.isArray(raw.data)) {
-      return raw.data;
-    }
-
-    if (raw && raw.data && Array.isArray(raw.data.data)) {
-      return raw.data.data;
-    }
-
-    return [];
-  });
-  producstError = computed(() => this.productsResult()?.error);
 
   private productResult$ = toObservable(this.selectedProductId).pipe(
     filter(Boolean),

@@ -1,22 +1,59 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  viewChild,
+  ElementRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CartService } from 'src/app/cart/cart.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
+import { ProductCardSkeletonComponent } from '../product-card-skeleton/product-card-skeleton.component';
 import { ProductService } from '../product.service';
+
+const SKELETON_ITEMS = 12;
 
 @Component({
   selector: 'pm-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['../product-list/product-list.component.css'],
-  imports: [FormsModule, ProductCardComponent],
+  imports: [FormsModule, ProductCardComponent, ProductCardSkeletonComponent],
 })
 export class ProductListComponent {
   pageTitle = 'Products';
   productService = inject(ProductService);
   cartService = inject(CartService);
 
+  loadMoreSentinel = viewChild<ElementRef>('loadMoreSentinel');
+
+  readonly skeletonItems = Array.from({ length: SKELETON_ITEMS }, (_, i) => i);
+
   products = this.productService.products;
   errorMessage = this.productService.producstError;
+
+  constructor() {
+    if (this.productService.products().length === 0 && !this.productService.loading()) {
+      this.productService.loadInitial();
+    }
+    effect(() => {
+      this.products();
+      const sentinel = this.loadMoreSentinel()?.nativeElement as HTMLElement | undefined;
+      if (!sentinel) return;
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries[0]?.isIntersecting) return;
+          if (this.productService.hasMore() && !this.productService.loading()) {
+            this.productService.loadMore();
+          }
+        },
+        { rootMargin: '200px', threshold: 0 },
+      );
+      observer.observe(sentinel);
+      return () => observer.disconnect();
+    });
+  }
 
   // Filter & sort state
   searchTerm = signal<string>('');
