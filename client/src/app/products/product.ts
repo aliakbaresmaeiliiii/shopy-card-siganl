@@ -9,7 +9,8 @@ export interface Product {
   price: number;
   quantityInStock?: number;
   hasReviews?: boolean;
-  image?:string;
+  image?: string;
+  category?: string;
   reviews?: Review[];
 }
 

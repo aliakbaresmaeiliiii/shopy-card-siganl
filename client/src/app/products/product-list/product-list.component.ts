@@ -7,7 +7,9 @@ import {
   viewChild,
   ElementRef,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
 import { CartService } from 'src/app/cart/cart.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { ProductCardSkeletonComponent } from '../product-card-skeleton/product-card-skeleton.component';
@@ -25,6 +27,9 @@ export class ProductListComponent {
   pageTitle = 'Products';
   productService = inject(ProductService);
   cartService = inject(CartService);
+  private readonly route = inject(ActivatedRoute);
+
+  private queryParams = toSignal(this.route.queryParams, { initialValue: {} });
 
   loadMoreSentinel = viewChild<ElementRef>('loadMoreSentinel');
 
@@ -34,6 +39,12 @@ export class ProductListComponent {
   errorMessage = this.productService.producstError;
 
   constructor() {
+    effect(() => {
+      const q = (this.queryParams() as Params)?.['q'];
+      if (q !== undefined) {
+        this.searchTerm.set(typeof q === 'string' ? q : '');
+      }
+    });
     if (this.productService.products().length === 0 && !this.productService.loading()) {
       this.productService.loadInitial();
     }
@@ -55,6 +66,20 @@ export class ProductListComponent {
     });
   }
 
+  // Category filter: null = All
+  selectedCategory = signal<string | null>(null);
+
+  readonly categories: { id: string | null; label: string }[] = [
+    { id: null, label: 'All' },
+    { id: 'Pet Supplies', label: 'Pet Supplies' },
+    { id: 'Furniture', label: 'Furniture' },
+    { id: 'TVs & Accessories', label: 'TVs & Accessories' },
+    { id: 'Home & Kitchen', label: 'Home & Kitchen' },
+    { id: 'Grocery', label: 'Grocery' },
+    { id: 'Health & Beauty', label: 'Health & Beauty' },
+    { id: 'Electronics', label: 'Electronics' },
+  ];
+
   // Filter & sort state
   searchTerm = signal<string>('');
   minPrice = signal<number | null>(null);
@@ -73,8 +98,13 @@ export class ProductListComponent {
     const max = this.maxPrice();
     const stockOnly = this.inStockOnly();
     const reviewsOnly = this.withReviewsOnly();
+    const category = this.selectedCategory();
 
     let result = list.filter((p) => {
+      if (category != null && (p.category ?? '') !== category) {
+        return false;
+      }
+
       if (term) {
         const haystack =
           (p.productName ?? '') +
@@ -172,5 +202,9 @@ export class ProductListComponent {
     ) {
       this.sortBy.set(value);
     }
+  }
+
+  onCategorySelect(categoryId: string | null): void {
+    this.selectedCategory.set(categoryId);
   }
 }

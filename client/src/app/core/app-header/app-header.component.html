@@ -1,17 +1,19 @@
 @if (showMenu) {
   <header class="app-header">
     <nav class="nav-inner">
-      <a routerLink="/welcome" class="brand" aria-label="Raavishop – Home">
-        <span class="brand__mark" aria-hidden="true">
-          <svg class="brand__mark-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
-            <text x="16" y="22" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-weight="700" font-size="18">R</text>
-            <defs><linearGradient id="brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
-          </svg>
-        </span>
-        <span class="brand__wordmark">Raavishop</span>
-      </a>
-      <ul class="nav-links">
+      <div class="nav-row">
+        <a routerLink="/welcome" class="brand" aria-label="Raavishop – Home">
+          <span class="brand__mark" aria-hidden="true">
+            <svg class="brand__mark-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
+              <text x="16" y="22" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-weight="700" font-size="18">R</text>
+              <defs><linearGradient id="brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+            </svg>
+          </span>
+          <span class="brand__wordmark">Raavishop</span>
+        </a>
+
+        <ul class="nav-links">
         @for (item of menuItems; track item.id) {
           <li>
             <a
@@ -38,8 +40,8 @@
             </a>
           </li>
         }
-      </ul>
-      <div class="nav-actions">
+        </ul>
+        <div class="nav-actions">
         <button
           type="button"
           class="user-trigger"
@@ -130,6 +132,62 @@
             </div>
           </div>
         }
+        </div>
+      </div>
+
+      <div class="header-search-row">
+        <div class="header-search-wrap">
+          <form class="header-search" (ngSubmit)="onHeaderSearch()" role="search">
+            <div class="header-search__wrap">
+              <input
+                type="search"
+                class="header-search__input"
+                [ngModel]="headerSearchQuery()"
+                (ngModelChange)="headerSearchQuery.set($event)"
+                (focus)="openSearchDropdown()"
+                (blur)="closeSearchDropdown()"
+                (keydown.escape)="searchDropdownOpen.set(false)"
+                name="q"
+                placeholder="Search for products, brands and more..."
+                aria-label="Search products"
+                autocomplete="off"
+                [attr.aria-expanded]="searchDropdownOpen()"
+                aria-haspopup="listbox"
+                aria-controls="header-search-suggestions"
+              />
+              <button type="submit" class="header-search__btn" aria-label="Search">
+                <svg class="header-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                </svg>
+              </button>
+            </div>
+          </form>
+          @if (searchDropdownOpen() && filteredSuggestions().length > 0) {
+            <ul
+              id="header-search-suggestions"
+              class="header-search-dropdown"
+              role="listbox"
+              (mousedown)="$event.preventDefault()"
+            >
+              @for (suggestion of filteredSuggestions(); track suggestion) {
+                <li role="option">
+                  <button
+                    type="button"
+                    class="header-search-dropdown__item"
+                    (click)="selectSuggestion(suggestion)"
+                  >
+                    <svg class="header-search-dropdown__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <circle cx="11" cy="11" r="8"/>
+                      <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <span>{{ suggestion }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+        </div>
       </div>
     </nav>
   </header>

@@ -1,15 +1,17 @@
 <section class="catalog">
-  <!-- Top chips / navigation row -->
+  <!-- Top chips / category filter -->
   <div class="catalog-top">
     <div class="catalog-top__pills">
-      <button class="catalog-pill catalog-pill--active" type="button">All</button>
-      <button class="catalog-pill" type="button">Pet Supplies</button>
-      <button class="catalog-pill" type="button">Furniture</button>
-      <button class="catalog-pill" type="button">TVs &amp; Accessories</button>
-      <button class="catalog-pill" type="button">Home &amp; Kitchen</button>
-      <button class="catalog-pill" type="button">Grocery</button>
-      <button class="catalog-pill" type="button">Health &amp; Beauty</button>
-      <button class="catalog-pill" type="button">Electronics</button>
+      @for (cat of categories; track cat.id ?? 'all') {
+        <button
+          class="catalog-pill"
+          [class.catalog-pill--active]="selectedCategory() === cat.id"
+          type="button"
+          (click)="onCategorySelect(cat.id)"
+        >
+          {{ cat.label }}
+        </button>
+      }
     </div>
   </div>
 

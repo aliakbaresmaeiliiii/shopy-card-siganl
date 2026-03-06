@@ -16,6 +16,7 @@ export interface ProductDTO {
   image?: string;
   quantityInStock?: number;
   hasReviews?: boolean;
+  category?: string;
   reviews?: Review[];
 }
 
