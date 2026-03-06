@@ -1,0 +1,66 @@
+@if (showFooter) {
+  <footer class="app-footer">
+    <div class="app-footer__inner">
+      <div class="app-footer__top">
+        <a routerLink="/welcome" class="app-footer__brand" aria-label="Raavishop – Home">
+          <span class="app-footer__logo" aria-hidden="true">
+            <svg class="app-footer__logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="32" height="32" rx="8" fill="url(#footer-brand-grad)" />
+              <text x="16" y="22" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-weight="700" font-size="18">R</text>
+              <defs>
+                <linearGradient id="footer-brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#6366f1" />
+                  <stop offset="1" stop-color="#8b5cf6" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+          <span class="app-footer__wordmark">Raavishop</span>
+        </a>
+        <p class="app-footer__tagline">Your personal store — curated products, simple checkout.</p>
+      </div>
+
+      <div class="app-footer__grid">
+        <nav class="app-footer__col" aria-label="Shop">
+          <h3 class="app-footer__col-title">Shop</h3>
+          <ul class="app-footer__links">
+            @for (link of shopLinks; track link.route) {
+              <li>
+                <a [routerLink]="link.route" class="app-footer__link">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </nav>
+        <nav class="app-footer__col" aria-label="Help">
+          <h3 class="app-footer__col-title">Help</h3>
+          <ul class="app-footer__links">
+            @for (link of helpLinks; track link.route) {
+              <li>
+                <a [routerLink]="link.route" class="app-footer__link">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </nav>
+        <nav class="app-footer__col" aria-label="Company">
+          <h3 class="app-footer__col-title">Company</h3>
+          <ul class="app-footer__links">
+            @for (link of companyLinks; track link.route) {
+              <li>
+                <a [routerLink]="link.route" class="app-footer__link">{{ link.label }}</a>
+              </li>
+            }
+          </ul>
+        </nav>
+      </div>
+
+      <div class="app-footer__bottom">
+        <p class="app-footer__copy">&copy; {{ currentYear }} Raavishop. All rights reserved.</p>
+        <div class="app-footer__legal">
+          <a routerLink="/products" class="app-footer__legal-link">Privacy</a>
+          <span class="app-footer__legal-sep">·</span>
+          <a routerLink="/products" class="app-footer__legal-link">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+}

@@ -1,7 +1,16 @@
 @if (showMenu) {
   <header class="app-header">
     <nav class="nav-inner">
-      <a routerLink="/welcome" class="brand">{{ pageTitle }}</a>
+      <a routerLink="/welcome" class="brand" aria-label="Raavishop – Home">
+        <span class="brand__mark" aria-hidden="true">
+          <svg class="brand__mark-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="8" fill="url(#brand-grad)" />
+            <text x="16" y="22" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-weight="700" font-size="18">R</text>
+            <defs><linearGradient id="brand-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+          </svg>
+        </span>
+        <span class="brand__wordmark">Raavishop</span>
+      </a>
       <ul class="nav-links">
         @for (item of menuItems; track item.id) {
           <li>
@@ -9,7 +18,7 @@
               class="nav-link"
               [routerLink]="item.routerLink"
               routerLinkActive="nav-link--active"
-              [routerLinkActiveOptions]="{ exact: item.routerLink === '/welcome' }"
+              [routerLinkActiveOptions]="{ exact: item.routerLink === '/products' }"
             >
               @if (item.name === 'Favorites') {
                 <svg class="nav-icon nav-icon--heart" viewBox="0 0 24 24" aria-hidden="true">

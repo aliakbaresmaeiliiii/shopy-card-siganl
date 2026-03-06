@@ -1,0 +1,165 @@
+/* Modern app footer – Raavishop */
+.app-footer {
+  margin-top: auto;
+  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+}
+
+.app-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+}
+
+.app-footer__top {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-footer__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: opacity 0.2s ease;
+}
+
+.app-footer__brand:hover {
+  opacity: 0.9;
+}
+
+.app-footer__brand:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.6);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.app-footer__logo {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.app-footer__logo-svg {
+  width: 32px;
+  height: 32px;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.app-footer__wordmark {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #f8fafc;
+}
+
+.app-footer__tagline {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.app-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.app-footer__col-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+}
+
+.app-footer__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-footer__links li {
+  margin-bottom: 0.5rem;
+}
+
+.app-footer__link {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.app-footer__link:hover {
+  color: #e2e8f0;
+}
+
+.app-footer__link:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.6);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.app-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.app-footer__copy {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.app-footer__legal {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.app-footer__legal-link {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.app-footer__legal-link:hover {
+  color: #e2e8f0;
+}
+
+.app-footer__legal-sep {
+  color: #475569;
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .app-footer__inner {
+    padding: 1.75rem 1rem 1.25rem;
+  }
+
+  .app-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .app-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 1.25rem;
+  }
+}

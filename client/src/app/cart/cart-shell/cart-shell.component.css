@@ -1,8 +1,16 @@
 .cart-page {
   max-width: 75rem;
   margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
+  padding: 1rem 0.75rem 2rem;
   min-height: 60vh;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .cart-page {
+    padding: 1.5rem 1rem 3rem;
+  }
 }
 
 .cart-page__header {
@@ -38,11 +46,17 @@
 }
 
 .cart-page__title {
-  font-size: 1.875rem;
+  font-size: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   color: #0f172a;
   margin: 0 0 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .cart-page__title {
+    font-size: 1.875rem;
+  }
 }
 
 .cart-page__subtitle {

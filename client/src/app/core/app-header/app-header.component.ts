@@ -13,7 +13,7 @@ export class AppHeaderComponent {
   private readonly router = inject(Router);
   private readonly cartService = inject(CartService);
 
-  pageTitle = 'Acme Product Management';
+  brandName = 'Raavishop';
   cartCount = this.cartService.cartCount;
   accountMenuOpen = signal(false);
 

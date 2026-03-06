@@ -1,8 +1,17 @@
 /* Page shell */
 .catalog {
   max-width: 1440px;
-  margin: 1.5rem auto 2.5rem;
-  padding: 0 1rem;
+  margin: 1rem auto 2rem;
+  padding: 0 0.75rem;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .catalog {
+    margin: 1.5rem auto 2.5rem;
+    padding: 0 1rem;
+  }
 }
 
 /* Top pills row */
@@ -215,6 +224,22 @@
   .catalog-filters {
     position: static;
     order: 2;
+  }
+
+  .catalog-results {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .catalog-results__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .catalog-results__title {
+    font-size: 1.1rem;
   }
 }
 

@@ -2,6 +2,23 @@
 
 @import 'ngx-toastr/toastr';
 
+/* Global responsive base */
+html {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
 /* Ensure Material Symbols Outlined icons render correctly */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
