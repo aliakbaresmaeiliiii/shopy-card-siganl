@@ -9,6 +9,8 @@ import {
   Observable,
   of,
   shareReplay,
+  startWith,
+  Subject,
   switchMap,
   tap,
   throwError,
@@ -59,8 +61,18 @@ export class ProductService {
 
   selectedProductId = signal<number | undefined>(undefined);
 
-  // All products for catalog view – first page with a high limit
-  private productsResult$ = this.getAllProducts(1, 100).pipe(shareReplay(1));
+  private refreshProducts$ = new Subject<void>();
+
+  // All products for catalog view – first page with a high limit; refetch on refreshProducts$
+  private productsResult$ = this.refreshProducts$.pipe(
+    startWith(undefined),
+    switchMap(() => this.getAllProducts(1, 100)),
+    shareReplay(1),
+  );
+
+  refreshProducts(): void {
+    this.refreshProducts$.next();
+  }
 
   getAllProducts(
     page: number = 1,

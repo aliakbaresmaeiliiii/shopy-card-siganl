@@ -1,27 +1,62 @@
-# Apm
+# Raavishop (Client)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.0.
+Angular frontend for **Raavishop** — your personal store. Browse products, manage cart and favorites, and checkout.
 
-## Development server
+## Prerequisites
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Node.js 18+
+- npm or yarn
 
-## Code scaffolding
+## Setup
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```bash
+npm install
+```
+
+## Environment
+
+Create or edit `src/app/environment/environment.ts` for development:
+
+- `apiUrl`: backend API base (e.g. `http://localhost:3000/api`)
+
+Production uses `environment.prod.ts`.
+
+## Development
+
+```bash
+npm start
+```
+
+Open [http://localhost:4200](http://localhost:4200). The app will reload on changes.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+npm run build
+```
+
+Output is in `dist/raavishop/`. Production build:
+
+```bash
+ng build --configuration production
+```
+
+## Features
+
+- **Products**: Catalog with filters (search, price, stock, reviews), sort, 100 products from API with CDN images
+- **Product detail**: Full product info, add to cart
+- **Cart & checkout**: Cart shell, totals, checkout flow
+- **Favorites**: Save favorites (in-memory)
+- **Auth**: Login with email/password; JWT stored in `localStorage`
+- **Responsive**: Mobile-first layout; skip link and route titles for accessibility and SEO
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+ng test
+```
 
 ## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- [Angular CLI](https://angular.io/cli)
+- [Raavishop backend](../server) must be running for API (products, auth).

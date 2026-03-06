@@ -104,6 +104,10 @@ export class ProductListComponent {
     this.productService.toggle(productId);
   }
 
+  onRetry(): void {
+    this.productService.refreshProducts();
+  }
+
   // Handlers for template bindings
   onSearchChange(value: string | null | undefined): void {
     this.searchTerm.set(String(value ?? ''));

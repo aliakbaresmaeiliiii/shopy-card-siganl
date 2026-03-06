@@ -2,10 +2,13 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './utilities/page-not-found.component';
 
+const SITE_TITLE = 'Raavishop';
+
 export const routes: Routes = [
-  { path: 'welcome', component: HomeComponent },
+  { path: 'welcome', component: HomeComponent, data: { title: 'Welcome' } },
   {
     path: 'login',
+    data: { title: 'Sign in' },
     loadComponent: () =>
       import('./core/auth-layout/auth-layout.component').then(
         (c) => c.AuthLayoutComponent,
@@ -13,6 +16,7 @@ export const routes: Routes = [
   },
   {
     path: 'products',
+    data: { title: 'Products' },
     loadComponent: () =>
       import('./products/product-list/product-list.component').then(
         (c) => c.ProductListComponent,
@@ -20,6 +24,7 @@ export const routes: Routes = [
   },
   {
     path: 'products/:id',
+    data: { title: 'Product' },
     loadComponent: () =>
       import('./products/product-detail/product-detail.component').then(
         (c) => c.ProductDetailComponent,
@@ -27,6 +32,7 @@ export const routes: Routes = [
   },
   {
     path: 'favorites',
+    data: { title: 'Favorites' },
     loadComponent: () =>
       import('./favorites/favorites.component').then(
         (c) => c.FavoritesComponent,
@@ -34,18 +40,20 @@ export const routes: Routes = [
   },
   {
     path: 'cart',
+    data: { title: 'Cart' },
     loadComponent: () =>
       import('./cart/cart-shell/cart-shell.component').then(
         (c) => c.CartShellComponent,
       ),
   },
-
   {
     path: 'checkout',
+    data: { title: 'Checkout' },
     loadComponent: () =>
       import('./checkout/checkout.component').then((c) => c.CheckoutComponent),
   },
-
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent },
+  { path: '**', component: PageNotFoundComponent, data: { title: 'Page not found' } },
 ];
+
+export const siteTitle = SITE_TITLE;

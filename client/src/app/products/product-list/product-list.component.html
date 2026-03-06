@@ -125,7 +125,10 @@
 
       @if (errorMessage()) {
         <div class="catalog-results__error">
-          {{ errorMessage() }}
+          <p class="catalog-results__error-text">{{ errorMessage() }}</p>
+          <button type="button" class="catalog-results__retry" (click)="onRetry()">
+            Try again
+          </button>
         </div>
       }
     </main>

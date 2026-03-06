@@ -1,11 +1,13 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from 'src/app/cart/cart.service';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import { MatButtonModule } from '@angular/material/button';
 import { environment } from '../../environment/environment';
+import { siteTitle } from '../../app.routes';
 
 @Component({
   selector: 'pm-product-detail',
@@ -17,6 +19,7 @@ export class ProductDetailComponent {
   productService = inject(ProductService);
   cartService = inject(CartService);
   private route = inject(ActivatedRoute);
+  private title = inject(Title);
 
   product = this.productService.product;
   errorMessage = this.productService.producstError;
@@ -28,6 +31,12 @@ export class ProductDetailComponent {
     if (id) {
       this.productService.productSelected(id);
     }
+    effect(() => {
+      const p = this.product();
+      if (p?.productName) {
+        this.title.setTitle(`${p.productName} | ${siteTitle}`);
+      }
+    });
   }
 
   /** Use CDN image when absolute URL, otherwise backend-relative. */

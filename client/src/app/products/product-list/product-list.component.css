@@ -208,12 +208,33 @@
 
 .catalog-results__error {
   margin-top: 1rem;
-  padding: 0.75rem 0.9rem;
+  padding: 1rem 1rem;
   border-radius: 0.6rem;
   background: #fef2f2;
   border: 1px solid #fecaca;
   color: #b91c1c;
   font-size: 0.85rem;
+}
+
+.catalog-results__error-text {
+  margin: 0 0 0.75rem;
+}
+
+.catalog-results__retry {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #b91c1c;
+  background: #fff;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.catalog-results__retry:hover {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 @media (max-width: 900px) {
