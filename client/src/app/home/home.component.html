@@ -6,15 +6,64 @@
     </p>
   </header>
 
-  <section class="home__hero">
-    <div class="home__hero-content">
-      <h2>Start shopping</h2>
-      <p>
-        Browse all products on our main catalog page with Amazon-style filters and details.
-      </p>
-      <a routerLink="/products" class="home__hero-button">
-        Go to products
-      </a>
+  <!-- Top picks for Iran – horizontal carousel first -->
+  <section class="home__top-picks" aria-labelledby="home-top-picks-heading">
+    <h2 id="home-top-picks-heading" class="home__section-title">Top picks for Iran</h2>
+    @if (topPicksLoading()) {
+      <div class="home__top-picks-loading">Loading top picks…</div>
+    } @else if (topPicks().length > 0) {
+      <div class="home__carousel-wrap">
+        <button
+          type="button"
+          class="home__carousel-arrow home__carousel-arrow--prev"
+          (click)="scrollTopPicks('left')"
+          aria-label="Scroll left"
+        >
+          ‹
+        </button>
+        <div #topPicksCarousel class="home__carousel" tabindex="0">
+          @for (product of topPicks(); track product.id) {
+            <div class="home__carousel-item">
+              <pm-product-card
+                [product]="product"
+                [isFavorite]="isFavorite(product.id)"
+                (toggleFavorite)="onToggleFavorite($event)"
+              />
+            </div>
+          }
+        </div>
+        <button
+          type="button"
+          class="home__carousel-arrow home__carousel-arrow--next"
+          (click)="scrollTopPicks('right')"
+          aria-label="Scroll right"
+        >
+          ›
+        </button>
+      </div>
+    } @else {
+      <p class="home__top-picks-empty">No products available right now. <a routerLink="/products">Browse catalog</a>.</p>
+    }
+  </section>
+
+  <!-- Category boxes: 2x2 grid, each with 4 sub-category tiles + See more -->
+  <section class="home__categories" aria-labelledby="home-categories-heading">
+    <h2 id="home-categories-heading" class="home__sr-only">Shop by category</h2>
+    <div class="home__category-grid">
+      @for (box of categoryBoxes; track box.id) {
+        <div class="home__category-box">
+          <h3 class="home__category-box-title">{{ box.title }}</h3>
+          <div class="home__category-tiles">
+            @for (sub of box.subCategories; track sub.id) {
+              <a [routerLink]="['/products']" [queryParams]="{ q: sub.label }" class="home__category-tile">
+                <img class="home__category-tile-img" [src]="sub.image" [alt]="sub.label" loading="lazy" />
+                <span class="home__category-tile-label">{{ sub.label }}</span>
+              </a>
+            }
+          </div>
+          <a [routerLink]="['/products']" class="home__category-see-more">{{ box.linkText }}</a>
+        </div>
+      }
     </div>
   </section>
 </div>

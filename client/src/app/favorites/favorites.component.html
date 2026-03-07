@@ -19,7 +19,7 @@
         <pm-product-card
           [product]="product"
           [isFavorite]="true"
-          (addToCart)="addToCart($event)"
+          (addToCart)="addToCart(product)"
           (toggleFavorite)="productService.toggle($event)"
         />
       }
