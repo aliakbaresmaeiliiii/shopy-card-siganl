@@ -1,9 +1,9 @@
-/* Modern app footer – Raavishop */
+/* Modern app footer – Raavishop, True Summer */
 .app-footer {
   margin-top: auto;
-  background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  color: #94a3b8;
+  background: var(--ts-footer-bg);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: #b8c4d4;
 }
 
 .app-footer__inner {
@@ -15,7 +15,7 @@
 .app-footer__top {
   margin-bottom: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .app-footer__brand {
@@ -47,20 +47,20 @@
   height: 32px;
   display: block;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 8px rgba(168, 180, 201, 0.35);
 }
 
 .app-footer__wordmark {
   font-size: 1.2rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  color: #f8fafc;
+  color: #e8eef4;
 }
 
 .app-footer__tagline {
   margin: 0;
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--ts-text-muted);
   max-width: 320px;
   line-height: 1.5;
 }
@@ -78,7 +78,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #cbd5e1;
+  color: #dce4ec;
 }
 
 .app-footer__links {
@@ -115,13 +115,13 @@
   justify-content: space-between;
   gap: 1rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .app-footer__copy {
   margin: 0;
   font-size: 0.85rem;
-  color: #64748b;
+  color: var(--ts-text-muted);
 }
 
 .app-footer__legal {
@@ -132,17 +132,17 @@
 }
 
 .app-footer__legal-link {
-  color: #94a3b8;
+  color: #b8c4d4;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .app-footer__legal-link:hover {
-  color: #e2e8f0;
+  color: #e4eaf1;
 }
 
 .app-footer__legal-sep {
-  color: #475569;
+  color: var(--ts-text-muted);
   user-select: none;
 }
 

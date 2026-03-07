@@ -20,7 +20,6 @@ export class ProductCardComponent {
   reviewCount = input<number | undefined>(undefined);
   apiUrl = environment.apiUrl;
 
-  addToCart = output<Product>();
   toggleFavorite = output<number>();
 
   /** Display rating: use input or default to 4.0 for display. */

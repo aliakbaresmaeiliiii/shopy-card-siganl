@@ -3,20 +3,25 @@
     <div class="pdp__layout">
       <!-- Left: Media + thumbnails + share/favorite -->
       <div class="pdp__media">
-        <div class="pdp__main-image">
+        <button
+          type="button"
+          class="pdp__main-image pdp__main-image--clickable"
+          (click)="openImageDialog(selectedThumb() || mainImageUrl(product), product.productName)"
+          aria-label="View full size image"
+        >
           <img
-            [src]="selectedThumb() || imageSrc(product.image)"
+            [src]="selectedThumb() || mainImageUrl(product)"
             [alt]="product.productName"
-            loading="lazy"
+            loading="eager"
           />
-        </div>
+        </button>
         <div class="pdp__thumbs">
           @for (thumb of thumbnails(product); track thumb.src) {
             <button
               type="button"
               class="pdp__thumb"
               [class.is-active]="selectedThumb() === thumb.src"
-              (click)="selectedThumb.set(thumb.src)"
+              (click)="selectedThumb.set(thumb.src); openImageDialog(thumb.src, thumb.alt)"
             >
               <img [src]="thumb.src" [alt]="thumb.alt" loading="lazy" />
             </button>
@@ -170,4 +175,32 @@
 
 @if (errorMessage()) {
   <div class="pdp__error">{{ errorMessage() }}</div>
+}
+
+<!-- Full-size image dialog -->
+@if (imageDialogOpen()) {
+  <div
+    class="pdp-image-dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-label="View full size image"
+  >
+    <div class="pdp-image-dialog__backdrop" (click)="closeImageDialog()"></div>
+    <div class="pdp-image-dialog__content">
+      <button
+        type="button"
+        class="pdp-image-dialog__close"
+        (click)="closeImageDialog()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+      <img
+        class="pdp-image-dialog__img"
+        [src]="imageDialogSrc()"
+        [alt]="imageDialogAlt()"
+        (click)="$event.stopPropagation()"
+      />
+    </div>
+  </div>
 }

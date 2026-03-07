@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, HostListener } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -61,8 +61,7 @@ export class ProductDetailComponent {
     effect(() => {
       const p = this.product();
       if (p) {
-        const src = this.imageSrc(p.image);
-        if (src) this.selectedThumb.set(src);
+        this.selectedThumb.set(this.mainImageUrl(p));
         this.quantity.set(1);
         this.selectedSpec.set('109999PA');
       }
@@ -92,7 +91,7 @@ export class ProductDetailComponent {
   }
 
   thumbnails(product: Product): { src: string; alt: string }[] {
-    const main = this.imageSrc(product?.image);
+    const main = this.mainImageUrl(product);
     if (!main) return [];
     const list = [{ src: main, alt: product?.productName ?? '' }];
     for (let i = 1; i <= 3; i++) {
@@ -175,6 +174,33 @@ export class ProductDetailComponent {
     return image.startsWith('http://') || image.startsWith('https://')
       ? image
       : this.apiUrl + image;
+  }
+
+  /** Main image URL with fallback so image always shows. */
+  mainImageUrl(product: Product): string {
+    const src = this.imageSrc(product?.image);
+    if (src) return src;
+    const id = product?.id ?? 0;
+    return `https://picsum.photos/seed/product-${id}/600/600`;
+  }
+
+  imageDialogOpen = signal(false);
+  imageDialogSrc = signal<string>('');
+  imageDialogAlt = signal('');
+
+  openImageDialog(src: string, alt: string): void {
+    this.imageDialogSrc.set(src);
+    this.imageDialogAlt.set(alt);
+    this.imageDialogOpen.set(true);
+  }
+
+  closeImageDialog(): void {
+    this.imageDialogOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.imageDialogOpen()) this.closeImageDialog();
   }
 
   pageTitle = computed(() => {

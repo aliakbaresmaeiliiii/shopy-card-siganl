@@ -6,37 +6,94 @@ import {
   signal,
   viewChild,
   ElementRef,
+  DestroyRef,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { interval } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { AuthService } from 'src/app/core/auth/auth.service';
-import { CartService } from 'src/app/cart/cart.service';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { ProductCardSkeletonComponent } from '../product-card-skeleton/product-card-skeleton.component';
 import { ProductService } from '../product.service';
 
 const SKELETON_ITEMS = 12;
 
+const BANNER_SLIDES = [
+  {
+    id: 1,
+    image: 'https://picsum.photos/seed/shop1/1200/400',
+    title: 'Discover something you’ll love',
+    sub: 'Curated products, trusted quality. Browse by category or search to find your next favourite.',
+  },
+  {
+    id: 2,
+    image: 'https://picsum.photos/seed/shop2/1200/400',
+    title: 'New arrivals every week',
+    sub: 'Fresh picks and bestsellers. Free shipping on orders over a threshold.',
+  },
+  {
+    id: 3,
+    image: 'https://picsum.photos/seed/shop3/1200/400',
+    title: 'Shop by category',
+    sub: 'Electronics, Home, Health & Beauty and more. Filter and sort to find exactly what you need.',
+  },
+  {
+    id: 4,
+    image: 'https://picsum.photos/seed/shop4/1200/400',
+    title: 'Easy returns & secure checkout',
+    sub: 'Buy with confidence. We’re here to help if you need anything.',
+  },
+];
+
+const PROMO_BANNERS = [
+  {
+    id: 1,
+    image: 'https://picsum.photos/seed/promo1/400/240',
+    title: 'Under promotion',
+    link: ['/products'],
+    queryParams: { q: 'deal' },
+  },
+  {
+    id: 2,
+    image: 'https://picsum.photos/seed/promo2/400/240',
+    title: 'Special offer',
+    link: ['/products'],
+  },
+];
+
 @Component({
   selector: 'pm-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['../product-list/product-list.component.css'],
-  imports: [FormsModule, ProductCardComponent, ProductCardSkeletonComponent],
+  imports: [FormsModule, RouterLink, ProductCardComponent, ProductCardSkeletonComponent],
 })
 export class ProductListComponent {
   pageTitle = 'Products';
   productService = inject(ProductService);
-  cartService = inject(CartService);
-  private readonly authService = inject(AuthService);
-  private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
 
   private queryParams = toSignal(this.route.queryParams, { initialValue: {} });
 
   loadMoreSentinel = viewChild<ElementRef>('loadMoreSentinel');
 
   readonly skeletonItems = Array.from({ length: SKELETON_ITEMS }, (_, i) => i);
+  readonly bannerSlides = BANNER_SLIDES;
+  readonly promoBanners = PROMO_BANNERS;
+  activeSlideIndex = signal(0);
+
+  goToSlide(index: number): void {
+    this.activeSlideIndex.set((index + BANNER_SLIDES.length) % BANNER_SLIDES.length);
+  }
+
+  nextSlide(): void {
+    this.goToSlide(this.activeSlideIndex() + 1);
+  }
+
+  prevSlide(): void {
+    this.goToSlide(this.activeSlideIndex() - 1);
+  }
 
   products = this.productService.products;
   errorMessage = this.productService.producstError;
@@ -67,6 +124,9 @@ export class ProductListComponent {
       observer.observe(sentinel);
       return () => observer.disconnect();
     });
+    interval(5000)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.nextSlide());
   }
 
   // Category filter: null = All
@@ -164,18 +224,6 @@ export class ProductListComponent {
 
     return result;
   });
-
-  onAddToCart(product: any): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login'], {
-        queryParams: { returnUrl: '/products' },
-      });
-      return;
-    }
-    if (!this.cartService.checkDuplicate(product)) {
-      this.cartService.addProduct(product);
-    }
-  }
 
   onToggleFavorite(productId: number): void {
     this.productService.toggle(productId);

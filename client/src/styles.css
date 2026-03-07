@@ -2,6 +2,27 @@
 
 @import 'ngx-toastr/toastr';
 
+/* True Summer color palette – cool, muted, soft (Pantone FHI–inspired) */
+:root {
+  --ts-bg: #eef2f6;
+  --ts-bg-subtle: #e4eaf1;
+  --ts-surface: #ffffff;
+  --ts-text: #3d4f5c;
+  --ts-text-muted: #6b7d8c;
+  --ts-primary: #5b7c99;
+  --ts-primary-hover: #4a6a85;
+  --ts-accent: #6b9b9b;
+  --ts-accent-hover: #5a8a8a;
+  --ts-border: #c5d0dc;
+  --ts-border-light: #dce4ec;
+  --ts-success: #7d9a7d;
+  --ts-error: #9b7d8a;
+  --ts-highlight: #a8b4c9;
+  --ts-focus: #7b8fa3;
+  --ts-header-bg: linear-gradient(135deg, #4a6a85 0%, #3d5a72 100%);
+  --ts-footer-bg: linear-gradient(180deg, #3d5a72 0%, #2d4558 100%);
+}
+
 /* Global responsive base */
 html {
   overflow-x: hidden;
@@ -11,6 +32,8 @@ html {
 body {
   overflow-x: hidden;
   min-width: 0;
+  color: var(--ts-text);
+  background: var(--ts-bg);
 }
 
 img {

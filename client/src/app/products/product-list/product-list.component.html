@@ -1,4 +1,50 @@
 <section class="catalog">
+  <!-- Banner row: main slider + 2 promo banners -->
+  <div class="catalog-banner-row">
+    <div class="catalog-banner" role="banner" aria-roledescription="carousel" [attr.aria-label]="'Banner slider'">
+      <div class="catalog-banner__track" [style.transform]="'translateX(-' + activeSlideIndex() * 100 + '%)'">
+        @for (slide of bannerSlides; track slide.id) {
+          <div class="catalog-banner__slide" [attr.aria-hidden]="activeSlideIndex() !== $index">
+            <img class="catalog-banner__img" [src]="slide.image" [alt]="slide.title" fetchpriority="high" />
+            <div class="catalog-banner__overlay"></div>
+            <div class="catalog-banner__content">
+              <h2 class="catalog-banner__title">{{ slide.title }}</h2>
+              <p class="catalog-banner__sub">{{ slide.sub }}</p>
+            </div>
+          </div>
+        }
+      </div>
+      <button type="button" class="catalog-banner__prev" (click)="prevSlide()" aria-label="Previous slide">
+        <span aria-hidden="true">‹</span>
+      </button>
+      <button type="button" class="catalog-banner__next" (click)="nextSlide()" aria-label="Next slide">
+        <span aria-hidden="true">›</span>
+      </button>
+      <div class="catalog-banner__dots" role="tablist" aria-label="Slide navigation">
+        @for (slide of bannerSlides; track slide.id; let i = $index) {
+          <button
+            type="button"
+            class="catalog-banner__dot"
+            [class.is-active]="activeSlideIndex() === i"
+            [attr.aria-label]="'Go to slide ' + (i + 1)"
+            [attr.aria-selected]="activeSlideIndex() === i"
+            role="tab"
+            (click)="goToSlide(i)"
+          ></button>
+        }
+      </div>
+    </div>
+    <div class="catalog-promos">
+      @for (promo of promoBanners; track promo.id) {
+        <a [routerLink]="promo.link" [queryParams]="promo.queryParams || null" class="catalog-promo" [attr.aria-label]="promo.title">
+          <img class="catalog-promo__img" [src]="promo.image" [alt]="promo.title" loading="lazy" />
+          <div class="catalog-promo__overlay"></div>
+          <span class="catalog-promo__label">{{ promo.title }}</span>
+        </a>
+      }
+    </div>
+  </div>
+
   <!-- Top chips / category filter -->
   <div class="catalog-top">
     <div class="catalog-top__pills">
@@ -119,7 +165,6 @@
               <pm-product-card
                 [product]="product"
                 [isFavorite]="productService.isFavorite(product.id)"
-                (addToCart)="onAddToCart($event)"
                 (toggleFavorite)="onToggleFavorite($event)"
               />
             }
