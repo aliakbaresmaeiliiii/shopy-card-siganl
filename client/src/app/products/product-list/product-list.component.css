@@ -257,6 +257,32 @@
   padding: 0.75rem;
 }
 
+.catalog-results__load-more {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.catalog-results__load-more-btn {
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  background: #2563eb;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.catalog-results__load-more-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.catalog-results__load-more-btn:active {
+  transform: translateY(0);
+}
+
 .catalog-results__empty {
   margin-top: 1rem;
   font-size: 0.9rem;

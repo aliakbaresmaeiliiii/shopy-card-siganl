@@ -1,7 +1,8 @@
 import { Component, computed, effect, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { CartService } from 'src/app/cart/cart.service';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
@@ -18,6 +19,8 @@ import { siteTitle } from '../../app.routes';
 export class ProductDetailComponent {
   productService = inject(ProductService);
   cartService = inject(CartService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private route = inject(ActivatedRoute);
   private title = inject(Title);
 
@@ -55,8 +58,14 @@ export class ProductDetailComponent {
   });
 
   addToCart(product: Product) {
-    this.cartService.checkDuplicate(product)
-      ? null
-      : this.cartService.addProduct(product);
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: `/products/${product.id}` },
+      });
+      return;
+    }
+    if (!this.cartService.checkDuplicate(product)) {
+      this.cartService.addProduct(product);
+    }
   }
 }

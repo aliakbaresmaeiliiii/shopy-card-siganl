@@ -128,6 +128,17 @@
           @if (productService.loading() && productService.products().length > 0) {
             <p class="catalog-results__loading-more">Loading more…</p>
           }
+          @if (productService.products().length > 0 && productService.hasMore() && !productService.loading()) {
+            <div class="catalog-results__load-more">
+              <button
+                type="button"
+                class="catalog-results__load-more-btn"
+                (click)="productService.loadMore()"
+              >
+                See more products
+              </button>
+            </div>
+          }
           @if (productService.products().length > 0 && !productService.hasMore() && !productService.loading()) {
             <p class="catalog-results__end">You’ve seen all products.</p>
           }

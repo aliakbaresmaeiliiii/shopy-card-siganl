@@ -8,7 +8,7 @@ import {
   minLength,
   required,
 } from '@angular/forms/signals';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService, UserDto } from '../auth.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -25,6 +25,7 @@ export interface login {
 export class LoginComponent {
   service = inject(AuthService);
   router = inject(Router);
+  private route = inject(ActivatedRoute);
   toast = inject(ToastrService);
   loginModel = signal<login>({ email: '', password: '' });
   // 2. Set up the form with validation rules in the schema function
@@ -49,7 +50,8 @@ export class LoginComponent {
       next: (res) => {
         console.log('USER LOGGED IN', res);
         localStorage.setItem('token', res.accessToken);
-        this.router.navigate(['/welcome']);
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/products';
+        this.router.navigateByUrl(returnUrl);
         this.toast.success('Login Successful!', 'Welcome Back');
       },
       error: (err) => {

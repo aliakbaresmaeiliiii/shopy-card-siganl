@@ -9,7 +9,8 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 import { CartService } from 'src/app/cart/cart.service';
 import { ProductCardComponent } from '../product-card/product-card.component';
 import { ProductCardSkeletonComponent } from '../product-card-skeleton/product-card-skeleton.component';
@@ -27,6 +28,8 @@ export class ProductListComponent {
   pageTitle = 'Products';
   productService = inject(ProductService);
   cartService = inject(CartService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
   private queryParams = toSignal(this.route.queryParams, { initialValue: {} });
@@ -162,6 +165,12 @@ export class ProductListComponent {
   });
 
   onAddToCart(product: any): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: '/products' },
+      });
+      return;
+    }
     if (!this.cartService.checkDuplicate(product)) {
       this.cartService.addProduct(product);
     }

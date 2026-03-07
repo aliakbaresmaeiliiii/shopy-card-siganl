@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/auth/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './utilities/page-not-found.component';
 
@@ -41,6 +42,7 @@ export const routes: Routes = [
   {
     path: 'cart',
     data: { title: 'Cart' },
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./cart/cart-shell/cart-shell.component').then(
         (c) => c.CartShellComponent,
@@ -49,10 +51,11 @@ export const routes: Routes = [
   {
     path: 'checkout',
     data: { title: 'Checkout' },
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./checkout/checkout.component').then((c) => c.CheckoutComponent),
   },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'welcome', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent, data: { title: 'Page not found' } },
 ];
 

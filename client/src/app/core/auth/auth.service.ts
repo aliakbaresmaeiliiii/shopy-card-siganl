@@ -9,6 +9,8 @@ export interface UserDto {
   password: string;
 }
 
+const TOKEN_KEY = 'token';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -18,6 +20,10 @@ export class AuthService {
   http = inject(HttpClient);
 
   private api = 'http://localhost:3000/api/auth';
+
+  isLoggedIn(): boolean {
+    return typeof localStorage !== 'undefined' && !!localStorage.getItem(TOKEN_KEY);
+  }
 
   login(data: {
     email: string;
