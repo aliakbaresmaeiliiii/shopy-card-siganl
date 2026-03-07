@@ -104,7 +104,7 @@
 
       @if (product.reviews && product.reviews.length > 0) {
         <div class="reviews-list">
-          @for (review of product.reviews; track review) {
+          @for (review of product.reviews; track review.id) {
             <article class="review">
               <h3 class="review__title">{{ review.title }}</h3>
               <p class="review__meta">

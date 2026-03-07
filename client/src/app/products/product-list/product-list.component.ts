@@ -128,8 +128,9 @@ export class ProductListComponent {
         return false;
       }
 
-      if (stockOnly && (p.quantityInStock ?? 0) <= 0) {
-        return false;
+      if (stockOnly) {
+        const qty = Number(p.quantityInStock);
+        if (!Number.isFinite(qty) || qty <= 0) return false;
       }
 
       if (reviewsOnly && !p.hasReviews) {
@@ -215,5 +216,9 @@ export class ProductListComponent {
 
   onCategorySelect(categoryId: string | null): void {
     this.selectedCategory.set(categoryId);
+  }
+
+  onInStockOnlyChange(checked: boolean): void {
+    this.inStockOnly.set(!!checked);
   }
 }

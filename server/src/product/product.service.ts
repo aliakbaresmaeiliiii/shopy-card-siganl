@@ -12,4 +12,8 @@ export class ProductService {
     const data = this.productList.slice(startIndex, endIndex);
     return { data };
   }
+
+  getById(id: number): ProductDTO | null {
+    return this.productList.find((p) => p.id === id) ?? null;
+  }
 }

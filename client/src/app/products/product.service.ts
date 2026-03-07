@@ -20,6 +20,26 @@ import { HttpErrorService } from '../utilities/http-error.service';
 import { Product, Result } from './product';
 
 const PAGE_SIZE = 20;
+const FAVORITES_STORAGE_KEY = 'raavishop_favorites';
+
+function loadFavoritesFromStorage(): Set<number> {
+  if (typeof localStorage === 'undefined') return new Set();
+  try {
+    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw) as number[];
+    return new Set(Array.isArray(parsed) ? parsed : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveFavoritesToStorage(ids: Set<number>): void {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify([...ids]));
+  } catch {}
+}
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +47,7 @@ const PAGE_SIZE = 20;
 export class ProductService {
   private storeProductSubject = new BehaviorSubject<Product[]>([]);
   storeProduct$ = this.storeProductSubject.asObservable();
-  private _favorites = signal<Set<number>>(new Set());
+  private _favorites = signal<Set<number>>(loadFavoritesFromStorage());
   favorites = this._favorites.asReadonly();
 
   toggle(productId: number) {
@@ -40,6 +60,7 @@ export class ProductService {
     }
 
     this._favorites.set(current);
+    saveFavoritesToStorage(current);
   }
 
   isFavorite(productId: number): boolean {
@@ -169,13 +190,12 @@ export class ProductService {
   // );
 
   private getProductWithReview(product: Product): Observable<Product> {
-    if (product.hasReviews) {
-      return this.http
-        .get<Review[]>(this.reviewService.getReviewUrl(product.id))
-        .pipe(map((reviews) => ({ ...product, reviews }) as Product));
-    } else {
-      return of(product);
-    }
+    return this.http
+      .get<Review[]>(this.reviewService.getReviewUrl(product.id))
+      .pipe(
+        map((reviews) => ({ ...product, reviews: reviews ?? [] }) as Product),
+        catchError(() => of({ ...product, reviews: [] } as Product)),
+      );
   }
 
   private handleError(err: HttpErrorResponse): Observable<never> {

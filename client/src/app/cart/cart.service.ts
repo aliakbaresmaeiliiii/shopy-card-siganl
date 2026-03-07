@@ -2,11 +2,32 @@ import { computed, Injectable, signal } from '@angular/core';
 import { CartItem } from './cart';
 import { Product } from '../products/product';
 
+const CART_STORAGE_KEY = 'raavishop_cart';
+
+function loadCartFromStorage(): CartItem[] {
+  if (typeof localStorage === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as CartItem[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveCartToStorage(items: CartItem[]): void {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  } catch {}
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  cartItems = signal<CartItem[]>([]);
+  cartItems = signal<CartItem[]>(loadCartFromStorage());
   cartCount = computed(() =>
     this.cartItems().reduce((arr, item) => arr + item.quantity, 0),
   );
@@ -36,20 +57,28 @@ export class CartService {
   }
 
   addProduct(product: Product): void {
-    this.cartItems.update((item) => [...item, { product, quantity: 1 }]);
+    this.cartItems.update((item) => {
+      const next = [...item, { product, quantity: 1 }];
+      saveCartToStorage(next);
+      return next;
+    });
   }
 
   removeFromCart(cartItem: CartItem): void {
-    this.cartItems.update((item) =>
-      item.filter((item) => item.product.id !== cartItem.product.id),
-    );
+    this.cartItems.update((item) => {
+      const next = item.filter((i) => i.product.id !== cartItem.product.id);
+      saveCartToStorage(next);
+      return next;
+    });
   }
 
   updateQuantity(cartItem: CartItem, quantity: number): void {
-    this.cartItems.update((item) =>
-      item.map((item) =>
-        item.product.id === cartItem.product.id ? { ...item, quantity } : item,
-      ),
-    );
+    this.cartItems.update((item) => {
+      const next = item.map((i) =>
+        i.product.id === cartItem.product.id ? { ...i, quantity } : i,
+      );
+      saveCartToStorage(next);
+      return next;
+    });
   }
 }

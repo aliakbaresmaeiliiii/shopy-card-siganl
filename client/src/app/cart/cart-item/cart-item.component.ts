@@ -26,6 +26,17 @@ export class CartItemComponent {
   maxQty = 99;
   exPrice = computed(() => this.item().quantity * this.item().product.price);
 
+  /** Use CDN image when absolute URL, otherwise backend-relative. Fallback to CDN by product id if missing. */
+  imageSrc(product: { id: number; image?: string }): string {
+    const image = product.image;
+    if (image) {
+      return image.startsWith('http://') || image.startsWith('https://')
+        ? image
+        : this.apiUrl + image;
+    }
+    return `https://picsum.photos/seed/product-${product.id}/64/64`;
+  }
+
   onQuantityChange(quantity: number): void {
     const q = Math.max(1, Math.min(this.maxQty, quantity));
     this.cartService.updateQuantity(this.item(), q);

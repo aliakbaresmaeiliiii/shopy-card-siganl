@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDTO } from './product';
 
@@ -12,6 +12,11 @@ export class ProductController {
     @Query('limit') limit: number = 5,
   ) {
     return this.service.getPaginated(page, limit);
+  }
+
+  @Get(':id')
+  getById(@Param('id') id: string) {
+    return this.service.getById(Number(id));
   }
 
   @Post()

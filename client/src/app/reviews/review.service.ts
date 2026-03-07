@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../environment/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReviewService {
-  // Just enough here for the code to compile
-  private reviewsUrl = 'api/reviews';
-  
+  private readonly reviewsUrl = `${environment.apiUrl}/reviews`;
 
   getReviewUrl(productId: number): string {
-
-    return this.reviewsUrl + '?productId=^' + productId + '$';
+    return `${this.reviewsUrl}?productId=${productId}`;
   }
 }

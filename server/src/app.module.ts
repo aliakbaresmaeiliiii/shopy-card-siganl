@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductModule } from './product/product.module';
+import { ReviewModule } from './review/review.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './middleware/auth/auth.middleware';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -9,6 +10,7 @@ import { join } from 'path';
 @Module({
   imports: [
     ProductModule,
+    ReviewModule,
     AuthModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),

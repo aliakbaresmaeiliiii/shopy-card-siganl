@@ -3,7 +3,7 @@
     <a [routerLink]="['/products', cartItem.product.id]" class="cart-item__product">
       <div class="cart-item__image-wrap">
         <img
-          [src]="apiUrl + (cartItem.product.image ?? '')"
+          [src]="imageSrc(cartItem.product)"
           [alt]="cartItem.product.productName"
           class="cart-item__image"
         />

@@ -60,7 +60,7 @@
           <input
             type="checkbox"
             [ngModel]="inStockOnly()"
-            (ngModelChange)="inStockOnly.set($event)"
+            (ngModelChange)="onInStockOnlyChange($event)"
           />
           <span>In stock only</span>
         </label>
