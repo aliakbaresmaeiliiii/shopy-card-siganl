@@ -18,6 +18,10 @@ export interface ProductDTO {
   hasReviews?: boolean;
   category?: string;
   reviews?: Review[];
+  /** City/location name (e.g. "Kuala Lumpur") */
+  location?: string;
+  /** Number of units sold */
+  soldCount?: number;
 }
 
 export interface Result<T> {

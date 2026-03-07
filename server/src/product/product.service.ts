@@ -14,6 +14,8 @@ export class ProductService {
   }
 
   getById(id: number): ProductDTO | null {
-    return this.productList.find((p) => p.id === id) ?? null;
+    const p = this.productList.find((p) => p.id === id);
+    if (!p) return null;
+    return { ...p, quantityInStock: p.quantityInStock ?? 50 };
   }
 }

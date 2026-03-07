@@ -15,9 +15,18 @@ function categoryForId(id: number): string {
   return 'Pet Supplies';
 }
 
-/** Every 5th product is out of stock (id % 5 === 0); rest have 50 in stock. */
-function stockForId(id: number): number {
-  return id % 5 === 0 ? 0 : 50;
+/** All products in stock. */
+function stockForId(_id: number): number {
+  return 50;
+}
+
+const LOCATIONS = ['Kuala Lumpur', 'Shah Alam', 'Petaling Jaya', 'Johor Bahru', 'George Town'];
+function locationForId(id: number): string {
+  return LOCATIONS[id % LOCATIONS.length];
+}
+
+function soldCountForId(id: number): number {
+  return 50 + (id % 20) * 12;
 }
 
 export const products: ProductDTO[] = [
@@ -121,4 +130,9 @@ export const products: ProductDTO[] = [
   { id: 98, productName: 'Paper Clips', productCode: 'PC-098', description: 'Jumbo box of paper clips', price: 5.99, quantityInStock: 50, hasReviews: false, image: CDN_IMAGE(98), category: categoryForId(98) },
   { id: 99, productName: 'Desk Caddy', productCode: 'DCA-099', description: 'Multi-compartment desk caddy', price: 21.99, quantityInStock: 50, hasReviews: true, image: CDN_IMAGE(99), category: categoryForId(99) },
   { id: 100, productName: 'Monitor Riser', productCode: 'MR-100', description: 'Bamboo monitor stand with storage', price: 45.99, quantityInStock: 50, hasReviews: true, image: CDN_IMAGE(100), category: categoryForId(100) },
-].map((p) => ({ ...p, quantityInStock: stockForId(p.id) }));
+].map((p) => ({
+  ...p,
+  quantityInStock: stockForId(p.id),
+  location: locationForId(p.id),
+  soldCount: soldCountForId(p.id),
+}));

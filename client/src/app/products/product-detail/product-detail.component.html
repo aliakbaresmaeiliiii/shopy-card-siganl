@@ -1,140 +1,173 @@
 @if (product(); as product) {
-  <section class="product-detail">
-    <div class="product-detail__layout">
-      <!-- Left: Media / gallery -->
-      <div class="product-detail__media">
-        <div class="product-detail__image-main">
+  <section class="pdp">
+    <div class="pdp__layout">
+      <!-- Left: Media + thumbnails + share/favorite -->
+      <div class="pdp__media">
+        <div class="pdp__main-image">
           <img
-            [src]="imageSrc(product.image)"
+            [src]="selectedThumb() || imageSrc(product.image)"
             [alt]="product.productName"
             loading="lazy"
           />
         </div>
-        <div class="product-detail__thumbs">
-          <button class="product-detail__thumb is-active" type="button">
-            <img
-              [src]="imageSrc(product.image)"
-              [alt]="product.productName"
-              loading="lazy"
-            />
-          </button>
-        </div>
-      </div>
-
-      <!-- Middle: Title, meta, description -->
-      <div class="product-detail__info">
-        <h1 class="product-detail__title">
-          {{ product.productName }}
-        </h1>
-
-        <div class="product-detail__meta">
-          <span class="product-detail__code">
-            Code:
-            <strong>{{ product.productCode }}</strong>
-          </span>
-
-          <span
-            class="product-detail__stock"
-            [class.product-detail__stock--in]="(product.quantityInStock ?? 0) > 0"
-            [class.product-detail__stock--out]="(product.quantityInStock ?? 0) === 0"
-          >
-            @if ((product.quantityInStock ?? 0) > 0) {
-              In stock
-            } @else {
-              Currently unavailable
-            }
-          </span>
-        </div>
-
-        <p class="product-detail__description">
-          {{ product.description || 'No description available for this product yet.' }}
-        </p>
-
-        <ul class="product-detail__highlights">
-          <li>Premium quality, carefully selected for you.</li>
-          <li>Secure checkout and fast delivery.</li>
-          <li>30-day easy returns on eligible items.</li>
-        </ul>
-      </div>
-
-      <!-- Right: Buy box -->
-      <aside class="product-detail__buy">
-        <div class="buy-box">
-          <div class="buy-box__price-row">
-            <span class="buy-box__price-label">Price:</span>
-            <span class="buy-box__price-value">
-              {{ product.price | currency: 'USD':'symbol':'1.2-2' }}
-            </span>
-          </div>
-
-          <div class="buy-box__stock-line">
-            <span
-              class="buy-box__stock"
-              [class.buy-box__stock--in]="(product.quantityInStock ?? 0) > 0"
-              [class.buy-box__stock--out]="(product.quantityInStock ?? 0) === 0"
+        <div class="pdp__thumbs">
+          @for (thumb of thumbnails(product); track thumb.src) {
+            <button
+              type="button"
+              class="pdp__thumb"
+              [class.is-active]="selectedThumb() === thumb.src"
+              (click)="selectedThumb.set(thumb.src)"
             >
-              @if ((product.quantityInStock ?? 0) > 0) {
-                In stock — {{ product.quantityInStock }} available
-              } @else {
-                Out of stock
-              }
-            </span>
+              <img [src]="thumb.src" [alt]="thumb.alt" loading="lazy" />
+            </button>
+          }
+        </div>
+        <div class="pdp__social">
+          <span class="pdp__share-label">Share:</span>
+          <div class="pdp__share-icons" aria-label="Share on social">
+            <a href="#" class="pdp__share-icon" aria-label="Messenger">M</a>
+            <a href="#" class="pdp__share-icon" aria-label="Facebook">f</a>
+            <a href="#" class="pdp__share-icon" aria-label="Pinterest">P</a>
+            <a href="#" class="pdp__share-icon" aria-label="X">X</a>
           </div>
+          <span class="pdp__favorite">
+            <span class="pdp__favorite-icon" aria-hidden="true">♥</span>
+            Favorite ({{ favoriteCount(product) }})
+          </span>
+        </div>
+      </div>
 
+      <!-- Right: Full product info -->
+      <div class="pdp__info">
+        <h1 class="pdp__title">{{ product.productName }}</h1>
+
+        <div class="pdp__ratings">
+          <span class="pdp__rating-value">5.0</span>
+          <span class="pdp__stars" aria-label="5 out of 5">★★★★★</span>
+          <span class="pdp__rating-count">{{ ratingCount(product) }} Ratings</span>
+          <a href="#" class="pdp__report">Report</a>
+        </div>
+
+        <div class="pdp__sale-banner">
+          <span class="pdp__sale-label">SHOCKING SALE</span>
+          <span class="pdp__sale-ends">
+            <span class="pdp__clock" aria-hidden="true">&#x1F550;</span>
+            ENDS IN
+          </span>
+          <span class="pdp__countdown">{{ countdownDisplay() }}</span>
+        </div>
+
+        <div class="pdp__price-block">
+          <span class="pdp__price-current">{{ product.price | currency: 'USD':'symbol':'1.2-2' }}</span>
+          <span class="pdp__price-original">{{ originalPrice(product) | currency: 'USD':'symbol':'1.2-2' }}</span>
+          <span class="pdp__price-off">-{{ discountPercent(product) }}%</span>
+        </div>
+
+        <div class="pdp__section">
+          <span class="pdp__section-label">Shipping</span>
+          <div class="pdp__shipping">
+            <span class="pdp__truck" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </span>
+            <span class="pdp__guarantee">Guaranteed to get by {{ guaranteeDate() }} &gt;</span>
+          </div>
+          <p class="pdp__shipping-free">Free shipping</p>
+          <p class="pdp__shipping-voucher">Get a voucher if your order arrives late.</p>
+        </div>
+
+        <div class="pdp__section">
+          <span class="pdp__section-label">Shopping Guarantee</span>
+          <div class="pdp__guarantee-line">
+            <span class="pdp__check" aria-hidden="true">&#x2713;</span>
+            15-Day Free Returns • Cash on Delivery • Buyer Protection
+          </div>
+        </div>
+
+        <div class="pdp__section">
+          <span class="pdp__section-label">Specification</span>
+          <div class="pdp__specs">
+            @for (spec of specificationOptions(product); track spec) {
+              <button
+                type="button"
+                class="pdp__spec-tag"
+                [class.is-active]="selectedSpec() === spec"
+                (click)="selectedSpec.set(spec)"
+              >
+                {{ spec }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="pdp__section">
+          <span class="pdp__section-label">Quantity</span>
+          <div class="pdp__qty">
+            <button type="button" class="pdp__qty-btn" (click)="decrementQty()" aria-label="Decrease">−</button>
+            <input
+              type="number"
+              class="pdp__qty-input"
+              [ngModel]="quantity()"
+              (ngModelChange)="setQuantity($event, product)"
+              min="1"
+              [max]="stockQuantity(product)"
+              aria-label="Quantity"
+            />
+            <button type="button" class="pdp__qty-btn" (click)="incrementQty(product)" aria-label="Increase">+</button>
+          </div>
+        </div>
+
+        <div class="pdp__actions">
           <button
-            mat-button
-            color="primary"
-            class="buy-box__cta"
-            [disabled]="(product.quantityInStock ?? 0) === 0"
+            type="button"
+            class="pdp__btn pdp__btn--cart"
+            [disabled]="stockQuantity(product) === 0"
             (click)="addToCart(product)"
           >
-            Add to Cart
+            <span class="pdp__btn-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </span>
+            Add To Cart
           </button>
-
-          <p class="buy-box__note">
-            Ships from and sold by Raavishop. Gift-wrap available.
-          </p>
+          <button
+            type="button"
+            class="pdp__btn pdp__btn--buy"
+            [disabled]="stockQuantity(product) === 0"
+            (click)="buyNow(product)"
+          >
+            Buy Now
+          </button>
         </div>
-      </aside>
+      </div>
     </div>
 
     <!-- Reviews -->
-    <section class="product-detail__reviews">
-      <h2 class="product-detail__reviews-title">Customer reviews</h2>
-
+    <section class="pdp__reviews">
+      <h2 class="pdp__reviews-title">Customer reviews</h2>
       @if (product.reviews && product.reviews.length > 0) {
-        <div class="reviews-list">
+        <div class="pdp__reviews-list">
           @for (review of product.reviews; track review.id) {
-            <article class="review">
-              <h3 class="review__title">{{ review.title }}</h3>
-              <p class="review__meta">
-                By <strong>{{ review.userName }}</strong>
-              </p>
-              <p class="review__text">
-                {{ review.text }}
-              </p>
+            <article class="pdp__review">
+              <h3 class="pdp__review-title">{{ review.title }}</h3>
+              <p class="pdp__review-meta">By <strong>{{ review.userName }}</strong></p>
+              <p class="pdp__review-text">{{ review.text }}</p>
             </article>
           }
         </div>
       } @else {
-        <p class="product-detail__no-reviews">
-          There are no reviews for this product yet.
-        </p>
+        <p class="pdp__no-reviews">There are no reviews for this product yet.</p>
       }
     </section>
   </section>
 } @else {
-  <div class="product-detail__empty">
-    <div class="product-detail__empty-icon">←</div>
+  <div class="pdp__empty">
+    <div class="pdp__empty-icon">←</div>
     <div>
       <h2>Select a product</h2>
-      <p>Choose an item from the list on the left to view its details.</p>
+      <p>Choose an item from the list to view its details.</p>
     </div>
   </div>
 }
 
 @if (errorMessage()) {
-  <div class="product-detail__error">
-    {{ errorMessage() }}
-  </div>
+  <div class="pdp__error">{{ errorMessage() }}</div>
 }

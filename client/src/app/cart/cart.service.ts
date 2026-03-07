@@ -56,9 +56,14 @@ export class CartService {
     return this.cartItems().some((item) => item.product.id === product.id);
   }
 
-  addProduct(product: Product): void {
+  addProduct(product: Product, quantity: number = 1): void {
+    const existing = this.cartItems().find((i) => i.product.id === product.id);
+    if (existing) {
+      this.updateQuantity(existing, existing.quantity + quantity);
+      return;
+    }
     this.cartItems.update((item) => {
-      const next = [...item, { product, quantity: 1 }];
+      const next = [...item, { product, quantity }];
       saveCartToStorage(next);
       return next;
     });

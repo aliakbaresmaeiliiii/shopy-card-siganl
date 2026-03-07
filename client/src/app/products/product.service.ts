@@ -190,11 +190,15 @@ export class ProductService {
   // );
 
   private getProductWithReview(product: Product): Observable<Product> {
+    const withStock = {
+      ...product,
+      quantityInStock: product.quantityInStock ?? 50,
+    } as Product;
     return this.http
       .get<Review[]>(this.reviewService.getReviewUrl(product.id))
       .pipe(
-        map((reviews) => ({ ...product, reviews: reviews ?? [] }) as Product),
-        catchError(() => of({ ...product, reviews: [] } as Product)),
+        map((reviews) => ({ ...withStock, reviews: reviews ?? [] }) as Product),
+        catchError(() => of({ ...withStock, reviews: [] } as Product)),
       );
   }
 
